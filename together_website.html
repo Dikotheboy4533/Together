@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Together</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1a237e 0%, #283593 50%, #3949ab 100%);
+            height: 100vh;
+        }
+
+        /* Loading Screen */
+        #loading-screen {
+            position: fixed; inset: 0;
+            background: linear-gradient(135deg, #1a237e 0%, #283593 50%, #3949ab 100%);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 1000; flex-direction: column;
+        }
+        #loading-text {
+            font-size: 4em; color: #fff;
+            text-shadow: 0 0 20px rgba(255,255,255,0.5);
+            animation: pulse 2s ease-in-out infinite; margin-bottom: 20px;
+        }
+        @keyframes pulse {
+            0%,100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+        .flower {
+            position: absolute; top: -50px; font-size: 2em;
+            animation: fall linear infinite; opacity: 0.8;
+        }
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        /* Desktop */
+        #desktop {
+            display: none; width: 100%; height: 100vh;
+            background: linear-gradient(135deg, #1a237e, #283593);
+            position: relative;
+        }
+        .desktop-icon {
+            position: absolute; width: 100px; height: 100px;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            cursor: pointer; padding: 10px; border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        .desktop-icon:hover {
+            background: rgba(255,255,255,0.2); transform: scale(1.05);
+        }
+        .desktop-icon span {
+            color: white; font-size: 0.9em; text-align: center;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        }
+        #love-file { top: 100px; left: 50px; }
+        #game-file { top: 100px; left: 200px; }
+
+        /* Notepad Window */
+        #notepad-window {
+            display: none; position: fixed;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 600px; height: 400px; background: #fff;
+            border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 500; flex-direction: column; overflow: hidden;
+        }
+        .window-header {
+            background: linear-gradient(135deg, #1a237e, #3949ab);
+            color: white; padding: 10px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .window-controls button {
+            background: #ff5f57; border: none; color: white;
+            width: 15px; height: 15px; border-radius: 50%;
+            margin-left: 5px; cursor: pointer;
+        }
+        .notepad-content {
+            flex: 1; padding: 20px; font-family: 'Courier New', monospace;
+            font-size: 1em; line-height: 1.6; overflow-y: auto;
+            background: #fffef0;
+        }
+
+        /* Game Window */
+        #game-window {
+            display: none; position: fixed;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 800px; height: 400px; background: #87CEEB;
+            border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 500; overflow: hidden;
+        }
+        #game-canvas { width: 100%; height: 100%; }
+        #game-message {
+            position: absolute; top: 20px; left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255,255,255,0.9);
+            padding: 10px 20px; border-radius: 20px;
+            font-size: 1.2em; color: #1a237e; display: none;
+        }
+
+        /* Final Screen */
+        #final-screen {
+            display: none; position: fixed; inset: 0;
+            background: black; z-index: 2000;
+            flex-direction: column; justify-content: center;
+            align-items: center; color: white;
+        }
+        #final-text {
+            font-size: 2em; margin-bottom: 30px;
+            opacity: 0; animation: fadeIn 3s ease-in forwards;
+        }
+        #question-text {
+            font-size: 2.5em; margin-bottom: 40px;
+            opacity: 0; animation: fadeIn 3s ease-in 3s forwards;
+        }
+        #yes-button {
+            padding: 15px 40px; font-size: 1.5em;
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            color: white; border: none; border-radius: 30px;
+            cursor: pointer; opacity: 0;
+            animation: fadeIn 3s ease-in 6s forwards;
+            transition: transform 0.3s ease;
+        }
+        #yes-button:hover { transform: scale(1.1); }
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        #bg-music { display: none; }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div id="loading-text">Together</div>
+    </div>
+
+    <!-- Desktop -->
+    <div id="desktop">
+        <div class="desktop-icon" id="love-file" onclick="openNotepad()">
+            <div style="font-size: 3em;">📄</div>
+            <span>love.txt</span>
+        </div>
+        <div class="desktop-icon" id="game-file" onclick="openGame()">
+            <div style="font-size: 3em;">🎮</div>
+            <span>Game</span>
+        </div>
+    </div>
+
+    <!-- Notepad Window -->
+    <div id="notepad-window">
+        <div class="window-header">
+            <span>love.txt - Notepad</span>
+            <div class="window-controls">
+                <button onclick="closeNotepad()">✕</button>
+            </div>
+        </div>
+        <div class="notepad-content">
+            <!-- PLACEHOLDER: Add your personal note here -->
+            <p>[Your personal message to her will go here...]</p>
+            <p>[Write why you like her, what you love about her, etc.]</p>
+            <p>[This is where your heartfelt words will appear]</p>
+        </div>
+    </div>
+
+    <!-- Game Window -->
+    <div id="game-window">
+        <canvas id="game-canvas"></canvas>
+        <div id="game-message"></div>
+    </div>
+
+    <!-- Final Screen -->
+    <div id="final-screen">
+        <div id="final-text">Go to the GC</div>
+        <div id="question-text">Will you be my girlfriend?</div>
+        <button id="yes-button" onclick="sendYes()">Yes</button>
+    </div>
+
+    <!-- Background Music -->
+    <!-- PLACEHOLDER: Add your MP3 file path here -->
+    <audio id="bg-music" loop>
+        <source src="[YOUR_MP3_FILE_PATH.mp3]" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Loading Screen with Flowers
+        setTimeout(() => {
+            document.getElementById('loading-screen').style.display = 'none';
+            document.getElementById('desktop').style.display = 'block';
+            startFlowerFall();
+        }, 5000);
+
+        function startFlowerFall() {
+            const flowers = ['🌹', '🌷', '🌸', '🌺'];
+            setInterval(() => {
+                const flower = document.createElement('div');
+                flower.className = 'flower';
+                flower.textContent = flowers[Math.floor(Math.random() * flowers.length)];
+                flower.style.left = Math.random() * 100 + 'vw';
+                flower.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                document.getElementById('loading-screen').appendChild(flower);
+                setTimeout(() => flower.remove(), 5000);
+            }, 300);
+        }
+
+        // Notepad Functions
+        function openNotepad() {
+            document.getElementById('notepad-window').style.display = 'flex';
+        }
+        function closeNotepad() {
+            document.getElementById('notepad-window').style.display = 'none';
+        }
+
+        // Game Functions
+        function openGame() {
+            document.getElementById('game-window').style.display = 'block';
+            startGame();
+        }
+
+        // Game Variables
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 800; canvas.height = 400;
+
+        let player = { x: 50, y: 300, width: 30, height: 50, jumping: false };
+        let flowers = [];
+        let score = 0;
+        let gameRunning = true;
+
+        // PLACEHOLDER: Add your compliments here
+        const compliments = [
+            "[Your smile is beautiful]",
+            "[You're so cute]",
+            "[You're so kind]",
+            "[You're so generous]",
+            "[You're amazing]"
+        ];
+
+        function startGame() {
+            // Flowers to collect
+            for (let i = 0; i < 5; i++) {
+                flowers.push({
+                    x: 300 + i * 150, y: 320,
+                    width: 30, height: 30, collected: false
+                });
+            }
+            // Boy at the end
+            flowers.push({
+                x: 750, y: 300,
+                width: 40, height: 60,
+                collected: false, isBoy: true
+            });
+            gameLoop();
+        }
+
+        function gameLoop() {
+            if (!gameRunning) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw player (girl)
+            ctx.fillStyle = '#ff69b4';
+            ctx.fillRect(player.x, player.y, player.width, player.height);
+
+            // Draw flowers / boy
+            flowers.forEach(flower => {
+                if (!flower.collected) {
+                    if (flower.isBoy) {
+                        ctx.fillStyle = '#4a90e2';
+                        ctx.fillRect(flower.x, flower.y, flower.width, flower.height);
+                    } else {
+                        ctx.fillStyle = '#ff6b6b';
+                        ctx.beginPath();
+                        ctx.arc(flower.x + 15, flower.y + 15, 15, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+            });
+
+            // Collisions
+            flowers.forEach(flower => {
+                if (!flower.collected &&
+                    player.x < flower.x + flower.width &&
+                    player.x + player.width > flower.x &&
+                    player.y < flower.y + flower.height &&
+                    player.y + player.height > flower.y) {
+
+                    flower.collected = true;
+                    if (!flower.isBoy) {
+                        document.getElementById('game-message').textContent =
+                            compliments[score % compliments.length];
+                        document.getElementById('game-message').style.display = 'block';
+                        score++;
+                        setTimeout(() => {
+                            document.getElementById('game-message').style.display = 'none';
+                        }, 2000);
+                    } else {
+                        gameRunning = false;
+                        setTimeout(() => {
+                            document.getElementById('game-window').style.display = 'none';
+                            document.getElementById('final-screen').style.display = 'flex';
+                            document.getElementById('bg-music').play();
+                        }, 2000);
+                    }
+                }
+            });
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Jump with Space
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' && !player.jumping) {
+                player.jumping = true;
+                let jumpHeight = 0;
+                const up = setInterval(() => {
+                    if (jumpHeight < 100) {
+                        player.y -= 5; jumpHeight += 5;
+                    } else {
+                        clearInterval(up);
+                        const down = setInterval(() => {
+                            if (player.y < 300) {
+                                player.y += 5;
+                            } else {
+                                player.jumping = false;
+                                clearInterval(down);
+                            }
+                        }, 20);
+                    }
+                }, 20);
+            }
+        });
+
+        // Send Yes (placeholder for email/notification)
+        function sendYes() {
+            // PLACEHOLDER: Add your email sending logic here
+            const email = "[YOUR_EMAIL_ADDRESS]";
+            console.log("She said YES! Notify: " + email);
+            alert("Yay! Go to the GC now! 💕");
+        }
+    </script>
+</body>
+</html>
