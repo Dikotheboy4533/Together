@@ -10,13 +10,14 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            user-select: none;
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow: hidden;
             height: 100vh;
-            background: #0b1026; /* fallback */
+            background: #0b1026;
         }
 
         /* ===========================
@@ -77,48 +78,46 @@
             background-position: center;
         }
 
-        /* Dark overlay so icons/text are readable */
         #desktop::before {
             content: "";
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(10,15,40,0.7), rgba(20,30,80,0.5));
+            background: linear-gradient(135deg, rgba(10,15,40,0.6), rgba(20,30,80,0.4));
             pointer-events: none;
         }
 
-        /* Top bar */
         #top-bar {
             position: absolute;
             top: 0; left: 0; right: 0;
-            height: 36px;
-            background: rgba(10, 15, 40, 0.7);
-            backdrop-filter: blur(6px);
+            height: 32px;
+            background: rgba(8, 12, 30, 0.85);
+            backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 12px;
             color: #cfe3ff;
-            font-size: 0.85em;
-            z-index: 10;
+            font-size: 0.8em;
+            z-index: 50;
+            border-bottom: 1px solid rgba(120, 160, 255, 0.25);
         }
 
         #clock {
             margin-left: auto;
         }
 
-        /* Desktop icons area */
         #desktop-icons {
             position: absolute;
             top: 50px;
             left: 20px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            z-index: 5;
+            gap: 22px;
+            z-index: 10;
         }
 
         .desktop-icon {
-            width: 90px;
+            width: 92px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -127,7 +126,6 @@
             padding: 8px 6px;
             border-radius: 10px;
             transition: background 0.2s ease, transform 0.2s ease;
-            user-select: none;
         }
 
         .desktop-icon:hover {
@@ -136,36 +134,35 @@
         }
 
         .desktop-icon .icon-emoji {
-            font-size: 2.6em;
-            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
+            font-size: 2.8em;
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.6));
         }
 
         .desktop-icon span {
             color: #eaf0ff;
             font-size: 0.85em;
             text-align: center;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+            text-shadow: 0 1px 4px rgba(0,0,0,0.9);
             max-width: 100%;
             word-wrap: break-word;
         }
 
-        /* Taskbar */
         #taskbar {
             position: absolute;
             bottom: 0; left: 0; right: 0;
-            height: 48px;
-            background: rgba(10, 15, 40, 0.85);
-            backdrop-filter: blur(8px);
+            height: 52px;
+            background: rgba(8, 12, 30, 0.92);
+            backdrop-filter: blur(10px);
             display: flex;
             align-items: center;
             padding: 0 10px;
-            z-index: 20;
-            border-top: 1px solid rgba(120, 160, 255, 0.25);
+            z-index: 60;
+            border-top: 1px solid rgba(120, 160, 255, 0.3);
         }
 
         #start-button {
-            width: 36px;
-            height: 36px;
+            width: 38px;
+            height: 38px;
             border-radius: 8px;
             background: linear-gradient(135deg, #3b82f6, #1d4ed8);
             color: white;
@@ -174,32 +171,65 @@
             justify-content: center;
             font-weight: bold;
             font-size: 1.1em;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
             cursor: default;
+        }
+
+        #taskbar-apps {
+            display: flex;
+            gap: 6px;
+            margin-left: 12px;
+            flex: 1;
+        }
+
+        .taskbar-app {
+            height: 38px;
+            min-width: 44px;
+            padding: 0 10px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.08);
+            color: #e0e9ff;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8em;
+            border: 1px solid rgba(120,160,255,0.25);
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .taskbar-app:hover {
+            background: rgba(255,255,255,0.15);
         }
 
         #taskbar-time {
             margin-left: auto;
             color: #cfe3ff;
-            font-size: 0.85em;
+            font-size: 0.8em;
             padding-right: 10px;
         }
 
         /* ===========================
-           WINDOWS (Notepad / Game)
+           WINDOWS
            =========================== */
         .window {
-            display: none;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             background: #0f172a;
             border-radius: 12px;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.6);
-            z-index: 500;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+            z-index: 200;
             overflow: hidden;
             border: 1px solid rgba(120, 160, 255, 0.35);
+            display: none;
+            min-width: 320px;
+            min-height: 220px;
+        }
+
+        .window.active {
+            z-index: 210;
         }
 
         .window-header {
@@ -209,45 +239,69 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.9em;
+            font-size: 0.85em;
             border-bottom: 1px solid rgba(120, 160, 255, 0.25);
+            cursor: grab;
+        }
+
+        .window-header:active {
+            cursor: grabbing;
+        }
+
+        .window-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 6px;
         }
 
         .window-controls button {
-            background: #ef4444;
-            border: none;
-            color: white;
             width: 14px;
             height: 14px;
             border-radius: 50%;
-            margin-left: 6px;
+            border: none;
             cursor: pointer;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.5);
         }
 
-        /* Notepad specific */
+        .btn-close {
+            background: #ef4444;
+        }
+        .btn-min {
+            background: #f59e0b;
+        }
+
+        .window-content {
+            height: calc(100% - 36px);
+            overflow: auto;
+        }
+
+        /* Notepad */
         #notepad-window {
-            width: 620px;
-            height: 420px;
-            display: none;
-            flex-direction: column;
+            width: 640px;
+            height: 440px;
         }
 
         .notepad-content {
-            flex: 1;
-            padding: 18px;
+            height: 100%;
+            padding: 16px;
             font-family: 'Courier New', monospace;
             font-size: 0.95em;
             line-height: 1.6;
-            overflow-y: auto;
             background: #fffdf5;
             color: #1f2937;
+            overflow-y: auto;
+            user-select: text;
         }
 
-        /* Game specific */
+        /* Game */
         #game-window {
-            width: 820px;
-            height: 420px;
+            width: 860px;
+            height: 460px;
             background: #87CEEB;
         }
 
@@ -255,6 +309,7 @@
             width: 100%;
             height: 100%;
             display: block;
+            image-rendering: pixelated;
         }
 
         #game-message {
@@ -270,11 +325,23 @@
             display: none;
             box-shadow: 0 4px 14px rgba(0,0,0,0.25);
             white-space: nowrap;
+            z-index: 5;
         }
 
-        /* ===========================
-           FINAL SCREEN
-           =========================== */
+        #game-instructions {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            z-index: 5;
+        }
+
+        /* Final Screen */
         #final-screen {
             display: none;
             position: fixed;
@@ -327,7 +394,6 @@
             to { opacity: 1; }
         }
 
-        /* Music */
         #bg-music {
             display: none;
         }
@@ -341,13 +407,11 @@
 
     <!-- Desktop -->
     <div id="desktop">
-        <!-- Top bar -->
         <div id="top-bar">
             <div>Together OS</div>
             <div id="clock">--:--</div>
         </div>
 
-        <!-- Desktop icons -->
         <div id="desktop-icons">
             <div class="desktop-icon" id="love-file" onclick="openNotepad()">
                 <div class="icon-emoji">📄</div>
@@ -359,33 +423,52 @@
             </div>
         </div>
 
-        <!-- Taskbar -->
         <div id="taskbar">
             <div id="start-button">✦</div>
+            <div id="taskbar-apps"></div>
             <div id="taskbar-time">--:--</div>
         </div>
     </div>
 
     <!-- Notepad Window -->
     <div id="notepad-window" class="window">
-        <div class="window-header">
-            <span>love.txt - Notepad</span>
+        <div class="window-header" onmousedown="startDrag(event, 'notepad-window')">
+            <div class="window-title">
+                <span>📄</span>
+                <span>love.txt - Notepad</span>
+            </div>
             <div class="window-controls">
-                <button onclick="closeNotepad()">✕</button>
+                <button class="btn-min" onclick="minimizeWindow('notepad-window')">-</button>
+                <button class="btn-close" onclick="closeNotepad()">✕</button>
             </div>
         </div>
-        <div class="notepad-content">
-            <!-- PLACEHOLDER: Add your personal note here -->
-            <p>[Your personal message to her will go here...]</p>
-            <p>[Write why you like her, what you love about her, etc.]</p>
-            <p>[This is where your heartfelt words will appear]</p>
+        <div class="window-content">
+            <div class="notepad-content">
+                <!-- PLACEHOLDER: Add your personal note here -->
+                <p>[Your personal message to her will go here...]</p>
+                <p>[Write why you like her, what you love about her, etc.]</p>
+                <p>[This is where your heartfelt words will appear]</p>
+            </div>
         </div>
     </div>
 
     <!-- Game Window -->
     <div id="game-window" class="window">
-        <canvas id="game-canvas"></canvas>
-        <div id="game-message"></div>
+        <div class="window-header" onmousedown="startDrag(event, 'game-window')">
+            <div class="window-title">
+                <span>🎮</span>
+                <span>Game</span>
+            </div>
+            <div class="window-controls">
+                <button class="btn-min" onclick="minimizeWindow('game-window')">-</button>
+                <button class="btn-close" onclick="closeGame()">✕</button>
+            </div>
+        </div>
+        <div class="window-content" style="position:relative;">
+            <canvas id="game-canvas"></canvas>
+            <div id="game-message"></div>
+            <div id="game-instructions">Press SPACE or tap to jump • Collect all flowers, then reach the boy</div>
+        </div>
     </div>
 
     <!-- Final Screen -->
@@ -439,34 +522,140 @@
         }
 
         // ===========================
-        // NOTEPAD
+        // WINDOW MANAGEMENT
         // ===========================
-        function openNotepad() {
-            document.getElementById('notepad-window').style.display = 'flex';
-        }
-        function closeNotepad() {
-            document.getElementById('notepad-window').style.display = 'none';
+        let zIndexCounter = 200;
+
+        function bringToFront(win) {
+            zIndexCounter++;
+            win.style.zIndex = zIndexCounter;
+            win.classList.add('active');
         }
 
-        // ===========================
-        // GAME
-        // ===========================
+        function openNotepad() {
+            const win = document.getElementById('notepad-window');
+            win.style.display = 'block';
+            bringToFront(win);
+            addTaskbarApp('notepad', '📄 love.txt', () => {
+                if (win.style.display === 'none') {
+                    win.style.display = 'block';
+                }
+                bringToFront(win);
+            });
+        }
+
+        function closeNotepad() {
+            const win = document.getElementById('notepad-window');
+            win.style.display = 'none';
+            removeTaskbarApp('notepad');
+        }
+
+        function minimizeWindow(id) {
+            const win = document.getElementById(id);
+            win.style.display = 'none';
+        }
+
         function openGame() {
-            document.getElementById('game-window').style.display = 'block';
+            const win = document.getElementById('game-window');
+            win.style.display = 'block';
+            bringToFront(win);
+            addTaskbarApp('game', '🎮 Game', () => {
+                if (win.style.display === 'none') {
+                    win.style.display = 'block';
+                }
+                bringToFront(win);
+            });
             startGame();
         }
 
+        function closeGame() {
+            const win = document.getElementById('game-window');
+            win.style.display = 'none';
+            removeTaskbarApp('game');
+            gameRunning = false;
+        }
+
+        // Dragging windows
+        let dragState = null;
+
+        function startDrag(e, id) {
+            const win = document.getElementById(id);
+            bringToFront(win);
+            dragState = {
+                win,
+                offsetX: e.clientX - win.getBoundingClientRect().left,
+                offsetY: e.clientY - win.getBoundingClientRect().top
+            };
+            document.addEventListener('mousemove', onDrag);
+            document.addEventListener('mouseup', stopDrag);
+        }
+
+        function onDrag(e) {
+            if (!dragState) return;
+            const { win, offsetX, offsetY } = dragState;
+            let x = e.clientX - offsetX;
+            let y = e.clientY - offsetY;
+
+            const rect = win.getBoundingClientRect();
+            if (x < -rect.width + 60) x = -rect.width + 60;
+            if (y < 0) y = 0;
+            if (x > window.innerWidth - 60) x = window.innerWidth - 60;
+            if (y > window.innerHeight - 60) y = window.innerHeight - 60;
+
+            win.style.left = (x + rect.width / 2) + 'px';
+            win.style.top = (y + rect.height / 2) + 'px';
+        }
+
+        function stopDrag() {
+            dragState = null;
+            document.removeEventListener('mousemove', onDrag);
+            document.removeEventListener('mouseup', stopDrag);
+        }
+
+        // Taskbar apps
+        function addTaskbarApp(id, label, onClick) {
+            if (document.getElementById('taskbar-app-' + id)) return;
+
+            const apps = document.getElementById('taskbar-apps');
+            const app = document.createElement('div');
+            app.className = 'taskbar-app';
+            app.id = 'taskbar-app-' + id;
+            app.textContent = label;
+            app.onclick = onClick;
+            apps.appendChild(app);
+        }
+
+        function removeTaskbarApp(id) {
+            const app = document.getElementById('taskbar-app-' + id);
+            if (app) app.remove();
+        }
+
+        // ===========================
+        // GAME (PLAYABLE)
+        // ===========================
         const canvas = document.getElementById('game-canvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = 820;
-        canvas.height = 420;
+        canvas.width = 860;
+        canvas.height = 460;
 
-        let player = { x: 60, y: 320, width: 34, height: 54, jumping: false, vy: 0 };
-        let items = []; // flowers + boy
+        const GROUND_Y = 360;
+
+        let player = {
+            x: 60,
+            y: GROUND_Y,
+            width: 36,
+            height: 58,
+            vy: 0,
+            jumping: false,
+            speed: 0
+        };
+
+        let items = [];
         let score = 0;
-        let gameRunning = true;
+        let gameRunning = false;
+        let gameWon = false;
 
-        // PLACEHOLDER: compliments when she picks flowers
+        // PLACEHOLDER: compliments
         const compliments = [
             "[Your smile is beautiful]",
             "[You're so cute]",
@@ -475,36 +664,42 @@
             "[You're amazing]"
         ];
 
-        function startGame() {
-            items = [];
+        function resetGame() {
+            player.x = 60;
+            player.y = GROUND_Y;
+            player.vy = 0;
+            player.jumping = false;
+            player.speed = 0;
 
-            // Flowers to collect
+            items = [];
+            // Flowers
             for (let i = 0; i < 5; i++) {
                 items.push({
                     type: 'flower',
                     x: 260 + i * 110,
-                    y: 340,
-                    width: 28,
-                    height: 28,
+                    y: 360,
+                    width: 32,
+                    height: 32,
                     collected: false
                 });
             }
-
             // Boy at the end
             items.push({
                 type: 'boy',
-                x: 750,
-                y: 310,
-                width: 44,
-                height: 70,
+                x: 770,
+                y: 330,
+                width: 50,
+                height: 76,
                 collected: false
             });
 
-            gameRunning = true;
-            player.y = 320;
-            player.vy = 0;
             score = 0;
+            gameWon = false;
+        }
 
+        function startGame() {
+            resetGame();
+            gameRunning = true;
             gameLoop();
         }
 
@@ -513,66 +708,67 @@
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Ground
-            ctx.fillStyle = '#56c268';
-            ctx.fillRect(0, 380, canvas.width, 40);
-
-            // Sky gradient
+            // Sky
             const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-            grad.addColorStop(0, '#87CEEB');
-            grad.addColorStop(1, '#c6f0ff');
+            grad.addColorStop(0, '#7ec8f5');
+            grad.addColorStop(1, '#c9f0ff');
             ctx.fillStyle = grad;
             ctx.fillRect(0, 0, canvas.width, 380);
 
-            // Apply gravity
-            if (player.y < 320) {
-                player.vy += 0.6;
+            // Ground
+            ctx.fillStyle = '#56c268';
+            ctx.fillRect(0, 380, canvas.width, 80);
+            ctx.fillStyle = '#3fa354';
+            ctx.fillRect(0, 380, canvas.width, 10);
+
+            // Physics
+            if (player.y < GROUND_Y) {
+                player.vy += 0.7;
                 player.y += player.vy;
             } else {
-                player.y = 320;
+                player.y = GROUND_Y;
                 player.vy = 0;
                 player.jumping = false;
             }
 
-            // Draw player (cute girl block)
+            // Draw player (girl)
             ctx.fillStyle = '#ff69b4';
             ctx.fillRect(player.x, player.y, player.width, player.height);
-            // Simple face
+            // Face
             ctx.fillStyle = '#fff';
-            ctx.fillRect(player.x + 6, player.y + 10, 8, 8);
-            ctx.fillRect(player.x + 20, player.y + 10, 8, 8);
+            ctx.fillRect(player.x + 8, player.y + 12, 9, 9);
+            ctx.fillRect(player.x + 19, player.y + 12, 9, 9);
             ctx.fillStyle = '#000';
-            ctx.fillRect(player.x + 8, player.y + 12, 4, 4);
-            ctx.fillRect(player.x + 22, player.y + 12, 4, 4);
+            ctx.fillRect(player.x + 10, player.y + 14, 5, 5);
+            ctx.fillRect(player.x + 21, player.y + 14, 5, 5);
 
             // Draw items
             items.forEach(item => {
                 if (item.collected) return;
 
                 if (item.type === 'flower') {
-                    // Flower (circle + small stem)
+                    // Flower head
                     ctx.fillStyle = '#ff6b6b';
                     ctx.beginPath();
-                    ctx.arc(item.x + 14, item.y + 14, 12, 0, Math.PI * 2);
+                    ctx.arc(item.x + 16, item.y + 16, 14, 0, Math.PI * 2);
                     ctx.fill();
-
+                    // Stem
                     ctx.fillStyle = '#2e7d32';
-                    ctx.fillRect(item.x + 12, item.y + 26, 4, 10);
+                    ctx.fillRect(item.x + 14, item.y + 30, 4, 12);
                 } else if (item.type === 'boy') {
-                    // Boy block
                     ctx.fillStyle = '#4a90e2';
                     ctx.fillRect(item.x, item.y, item.width, item.height);
                     // Face
                     ctx.fillStyle = '#fff';
-                    ctx.fillRect(item.x + 8, item.y + 12, 10, 10);
-                    ctx.fillRect(item.x + 26, item.y + 12, 10, 10);
+                    ctx.fillRect(item.x + 12, item.y + 16, 11, 11);
+                    ctx.fillRect(item.x + 27, item.y + 16, 11, 11);
                     ctx.fillStyle = '#000';
-                    ctx.fillRect(item.x + 10, item.y + 14, 6, 6);
-                    ctx.fillRect(item.x + 28, item.y + 14, 6, 6);
+                    ctx.fillRect(item.x + 14, item.y + 18, 7, 7);
+                    ctx.fillRect(item.x + 29, item.y + 18, 7, 7);
                 }
             });
 
-            // Collisions
+            // Collision detection
             items.forEach(item => {
                 if (item.collected) return;
 
@@ -591,14 +787,16 @@
                         score++;
                         setTimeout(() => {
                             document.getElementById('game-message').style.display = 'none';
-                        }, 1800);
+                        }, 1600);
                     } else if (item.type === 'boy') {
                         gameRunning = false;
+                        gameWon = true;
                         setTimeout(() => {
                             document.getElementById('game-window').style.display = 'none';
+                            removeTaskbarApp('game');
                             document.getElementById('final-screen').style.display = 'flex';
                             document.getElementById('bg-music').play();
-                        }, 1500);
+                        }, 1200);
                     }
                 }
             });
@@ -606,11 +804,10 @@
             requestAnimationFrame(gameLoop);
         }
 
-        // Jump with Space or tap
         function jump() {
-            if (!player.jumping) {
+            if (!player.jumping && gameRunning) {
                 player.jumping = true;
-                player.vy = -9;
+                player.vy = -10.5;
             }
         }
 
@@ -621,7 +818,6 @@
             }
         });
 
-        // Also allow tap/click on game area to jump (for phone)
         canvas.addEventListener('pointerdown', (e) => {
             e.preventDefault();
             jump();
