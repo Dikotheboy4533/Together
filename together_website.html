@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewpor" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TOGETHER</title>
     <style>
         * {
@@ -32,6 +32,7 @@
             align-items: center;
             z-index: 3000;
             flex-direction: column;
+            cursor: pointer;
         }
 
         #loading-text {
@@ -41,6 +42,19 @@
             animation: pulse 2s ease-in-out infinite;
             margin-bottom: 20px;
             letter-spacing: 2px;
+        }
+
+        #loading-hint {
+            color: rgba(255,255,255,0.7);
+            font-size: 1em;
+            margin-top: 30px;
+            opacity: 0;
+            animation: fadeInHint 1s ease-in forwards;
+            animation-delay: 2s;
+        }
+
+        @keyframes fadeInHint {
+            to { opacity: 1; }
         }
 
         @keyframes pulse {
@@ -72,7 +86,6 @@
             height: 100vh;
             position: relative;
             overflow: hidden;
-            /* PLACEHOLDER: custom background image */
             background-image: url('bg.jpg');
             background-size: cover;
             background-position: center;
@@ -391,6 +404,7 @@
     <!-- Loading Screen -->
     <div id="loading-screen">
         <div id="loading-text">Together</div>
+        <div id="loading-hint">Click anywhere to continue</div>
     </div>
 
     <!-- Desktop -->
@@ -432,22 +446,20 @@
         </div>
         <div class="window-content">
             <div class="notepad-content">
-                <!-- PLACEHOLDER: Add your personal note here -->
                 <p>Heyyy, listen.. Ik we've only been talking for about 6 days now but the truth is.. I really really like you a lot... </p>
-<p> Basically I love everything bout you.. Your smile, your laugh, how nice and kind you are, how much you care about people.. </p>
-<p> You are seriously everything I could ever wish for and I want you to be in my life and I would love to be in yours.. </p>
-<p> I still remember the day we started talking and I hit off all those pickup lines at you, like it was just yesterday... </p>
-<p> N Ik we've both been through a lot n you've told me that you are not perfect,  well I want you to know that in my eyes, you will always be perfect, call me stupid hehe </p>
-<p> In this world, it's genuinely hard to find someone like you, someone who cares more about other people's happiness over their own n that is one of the reasons why you are so special, my love. </p>
-<p> Well I want you to know that, I'll do everything I can but I'll never ever let you shed a tear again, if it is something I can control.. Your happiness is everything to me.. </p>
-<p> Hehe, its pretty beautiful UK, thinking of it.. Just a week ago, we were just two random ppl from two different countries and today, we're a big part of each other's lives.<\p>
-<p> To be honest, I was almost ready to give up on dating. I was like 'Just forget it, God will show me the right person at the right time' n then, you came along and you've made my entire life so MAGICAL. And now, I can't even imagine a day without waking up to your message or talking to you. </p>
-<p> N Ik it must be hard, trusting someone again but I promise you, I'd rather earn your trust rather than just ask for itt. . </p>
-<p> Tbh even Idk how all this works cause I've never done long distance before.. Cause one thing is that my love language is very physical, like I love being close to someone physically but with you, idc anymore.. I really really like you  and I wanna be with you even if I can't hug you or kiss you rn because I know that I will always wake up knowing that one day, we will meet and do everything we've dreamt of (hehe everything) </p>
-<p> So believe me when I say this, from the bottom of my heart.. </p>
-<p> I LOVE YOUU, A LOT, TONS N TONS, INFINITY AND MOREEE </p>
-<p> MWUAHHH </p>
-
+                <p>Basically I love everything bout you.. Your smile, your laugh, how nice and kind you are, how much you care about people.. </p>
+                <p>You are seriously everything I could ever wish for and I want you to be in my life and I would love to be in yours.. </p>
+                <p>I still remember the day we started talking and I hit off all those pickup lines at you, like it was just yesterday... </p>
+                <p>N Ik we've both been through a lot n you've told me that you are not perfect, well I want you to know that in my eyes, you will always be perfect, call me stupid hehe </p>
+                <p>In this world, it's genuinely hard to find someone like you, someone who cares more about other people's happiness over their own n that is one of the reasons why you are so special, my love. </p>
+                <p>Well I want you to know that, I'll do everything I can but I'll never ever let you shed a tear again, if it is something I can control.. Your happiness is everything to me.. </p>
+                <p>Hehe, its pretty beautiful UK, thinking of it.. Just a week ago, we were just two random ppl from two different countries and today, we're a big part of each other's lives.</p>
+                <p>To be honest, I was almost ready to give up on dating. I was like 'Just forget it, God will show me the right person at the right time' n then, you came along and you've made my entire life so MAGICAL. And now, I can't even imagine a day without waking up to your message or talking to you. </p>
+                <p>N Ik it must be hard, trusting someone again but I promise you, I'd rather earn your trust rather than just ask for itt. . </p>
+                <p>Tbh even Idk how all this works cause I've never done long distance before.. Cause one thing is that my love language is very physical, like I love being close to someone physically but with you, idc anymore.. I really really like you and I wanna be with you even if I can't hug you or kiss you rn because I know that I will always wake up knowing that one day, we will meet and do everything we've dreamt of (hehe everything) </p>
+                <p>So believe me when I say this, from the bottom of my heart.. </p>
+                <p>I LOVE YOUU, A LOT, TONS N TONS, INFINITY AND MOREEE </p>
+                <p>MWUAHHH </p>
             </div>
         </div>
     </div>
@@ -474,17 +486,30 @@
     <div id="story-final-overlay">
         <div id="story-final-text">
             Come to our first GC and drop a 'Heyy'<br />
-            I’m waiting.
+            I'm waiting.
         </div>
     </div>
 
     <!-- Background Music -->
-    <!-- PLACEHOLDER: Add your MP3 file path here -->
     <audio id="bg-music" loop>
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
     <script>
+        // ===========================
+        // MUSIC CONTROL
+        // ===========================
+        let musicStarted = false;
+        const bgMusic = document.getElementById('bg-music');
+
+        function startMusic() {
+            if (musicStarted) return;
+            bgMusic.play().catch(e => {
+                console.log('Music autoplay blocked:', e);
+            });
+            musicStarted = true;
+        }
+
         // ===========================
         // CLOCK
         // ===========================
@@ -502,11 +527,15 @@
         // ===========================
         // LOADING SCREEN
         // ===========================
-        setTimeout(() => {
-            document.getElementById('loading-screen').style.display = 'none';
-            document.getElementById('desktop').style.display = 'block';
+        const loadingScreen = document.getElementById('loading-screen');
+        const desktop = document.getElementById('desktop');
+
+        loadingScreen.addEventListener('click', () => {
+            startMusic();
+            loadingScreen.style.display = 'none';
+            desktop.style.display = 'block';
             startFlowerFall();
-        }, 5000);
+        });
 
         function startFlowerFall() {
             const flowers = ['🌹', '🌷', '🌸', '🌺'];
@@ -516,7 +545,7 @@
                 flower.textContent = flowers[Math.floor(Math.random() * flowers.length)];
                 flower.style.left = Math.random() * 100 + 'vw';
                 flower.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                document.getElementById('loading-screen').appendChild(flower);
+                document.body.appendChild(flower);
                 setTimeout(() => flower.remove(), 5000);
             }, 250);
         }
@@ -634,34 +663,28 @@
         // ===========================
         const storyScenes = [
             {
-                text:
-                    "Sometimes life hits hard. People make mistakes, they hurt others...",
+                text: "Sometimes life hits hard. People make mistakes, they hurt others...",
                 button: "I know…"
             },
             {
-                text:
-                    "But there’s one thing I want you to never forget:",
+                text: "But there's one thing I want you to never forget:",
                 button: "What is it?"
             },
             {
-                text:
-                    "No matter what happens or what comes at us..  I’ll always be here.",
+                text: "No matter what happens or what comes at us.. I'll always be here.",
                 button: "Always?"
             },
             {
-                text:
-                    "Always. Through good days, bad days, mood offs, hurting times, painful moments" ,
+                text: "Always. Through good days, bad days, mood offs, hurting times, painful moments",
                 button: "Show me."
             },
             {
-                text:
-                    "Even when things get hard, I’ll wait. I'll stay..  I'll stand, for you. Ik u might have bad days, u might be dry, know that I'll always be here because love isn't just about caring about a person, it's about choosing them, even when they change...",
+                text: "Even when things get hard, I'll wait. I'll stay.. I'll stand, for you. Ik u might have bad days, u might be dry, know that I'll always be here because love isn't just about caring about a person, it's about choosing them, even when they change...",
                 button: "Okay…"
             },
             {
-                text:
-                    "So I have one question for you…",
-                button: "Ask meee" 
+                text: "So I have one question for you…",
+                button: "Ask meee"
             }
         ];
 
@@ -681,14 +704,12 @@
 
         function showScene(index) {
             if (index >= storyScenes.length) {
-                // End of scenes → show final overlay
                 finishStory();
                 return;
             }
 
             const scene = storyScenes[index];
 
-            // Fade out text & button
             storyTextEl.classList.remove('visible');
             storyButtonEl.classList.remove('visible');
 
@@ -696,11 +717,9 @@
                 storyTextEl.textContent = scene.text;
                 storyButtonEl.textContent = scene.button;
 
-                // Fade in text
                 storyTextEl.classList.add('visible');
 
                 setTimeout(() => {
-                    // Then fade in button
                     storyButtonEl.classList.add('visible');
                 }, 600);
             }, 800);
@@ -714,26 +733,12 @@
 
         function finishStory() {
             storyActive = false;
-            // Close story window
             const win = document.getElementById('story-window');
             win.style.display = 'none';
             removeTaskbarApp('story');
 
-            // Show final full-screen overlay
             storyFinalOverlay.style.display = 'flex';
-
-            // Start music if not already
-            const music = document.getElementById('bg-music');
-            if (music.paused) {
-                music.play().catch(() => {});
-            }
         }
-
-        // ===========================
-        // FINAL (GC MESSAGE IS ENOUGH)
-        // ===========================
-        // No "Will you be my girlfriend?" here anymore.
-        // You'll ask her in the GC.
     </script>
 </body>
 </html>
