@@ -298,56 +298,70 @@
             user-select: text;
         }
 
-        /* Game */
-        #game-window {
-            width: 860px;
-            height: 460px;
-            background: #87CEEB;
+        /* Story Window */
+        #story-window {
+            width: 700px;
+            height: 500px;
+            background: radial-gradient(circle at center, #0f172a, #0b1220);
+            color: #e2e8f0;
         }
 
-        #game-canvas {
+        #story-content {
+            position: relative;
             width: 100%;
             height: 100%;
-            display: block;
-            image-rendering: pixelated;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            text-align: center;
         }
 
-        #game-message {
-            position: absolute;
-            top: 14px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.95);
-            padding: 8px 16px;
-            border-radius: 18px;
+        .story-text {
+            font-size: 1.5em;
+            line-height: 1.6;
+            max-width: 520px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        .story-text.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .story-button {
+            margin-top: 30px;
+            padding: 10px 28px;
             font-size: 1em;
-            color: #1a237e;
-            display: none;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.25);
-            white-space: nowrap;
-            z-index: 5;
+            border-radius: 22px;
+            border: none;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(60, 100, 255, 0.4);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.6s ease;
+            opacity: 0;
         }
 
-        #game-instructions {
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.6);
-            color: #fff;
-            padding: 6px 12px;
-            border-radius: 12px;
-            font-size: 0.8em;
-            z-index: 5;
+        .story-button.visible {
+            opacity: 1;
         }
 
-        /* Final Screen */
-        #final-screen {
+        .story-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 24px rgba(60, 100, 255, 0.55);
+        }
+
+        /* Final overlay after story */
+        #story-final-overlay {
             display: none;
             position: fixed;
             inset: 0;
             background: radial-gradient(circle at center, #0b1026, #000);
-            z-index: 2000;
+            z-index: 2500;
             flex-direction: column;
             justify-content: center;
             align-items: center;
@@ -355,39 +369,13 @@
             text-align: center;
         }
 
-        #final-text {
-            font-size: 2em;
-            margin-bottom: 25px;
+        #story-final-text {
+            font-size: 2.2em;
+            line-height: 1.5;
             opacity: 0;
             animation: fadeIn 3s ease-in forwards;
-            text-shadow: 0 0 15px rgba(120,160,255,0.7);
-        }
-
-        #question-text {
-            font-size: 2.4em;
-            margin-bottom: 35px;
-            opacity: 0;
-            animation: fadeIn 3s ease-in 3s forwards;
-            text-shadow: 0 0 20px rgba(255,120,160,0.8);
-        }
-
-        #yes-button {
-            padding: 14px 40px;
-            font-size: 1.5em;
-            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
-            color: white;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            opacity: 0;
-            animation: fadeIn 3s ease-in 6s forwards;
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-            box-shadow: 0 6px 20px rgba(255, 100, 120, 0.5);
-        }
-
-        #yes-button:hover {
-            transform: scale(1.08);
-            box-shadow: 0 10px 28px rgba(255, 100, 120, 0.7);
+            text-shadow: 0 0 20px rgba(120,160,255,0.7);
+            padding: 0 20px;
         }
 
         @keyframes fadeIn {
@@ -417,9 +405,9 @@
                 <div class="icon-emoji">📄</div>
                 <span>love.txt</span>
             </div>
-            <div class="desktop-icon" id="game-file" onclick="openGame()">
-                <div class="icon-emoji">🎮</div>
-                <span>Game</span>
+            <div class="desktop-icon" id="story-file" onclick="openStory()">
+                <div class="icon-emoji">❤️</div>
+                <span>Always</span>
             </div>
         </div>
 
@@ -452,30 +440,30 @@
         </div>
     </div>
 
-    <!-- Game Window -->
-    <div id="game-window" class="window">
-        <div class="window-header" onmousedown="startDrag(event, 'game-window')">
+    <!-- Story Window -->
+    <div id="story-window" class="window">
+        <div class="window-header" onmousedown="startDrag(event, 'story-window')">
             <div class="window-title">
-                <span>🎮</span>
-                <span>Game</span>
+                <span>❤️</span>
+                <span>Always</span>
             </div>
             <div class="window-controls">
-                <button class="btn-min" onclick="minimizeWindow('game-window')">-</button>
-                <button class="btn-close" onclick="closeGame()">✕</button>
+                <button class="btn-min" onclick="minimizeWindow('story-window')">-</button>
+                <button class="btn-close" onclick="closeStory()">✕</button>
             </div>
         </div>
-        <div class="window-content" style="position:relative;">
-            <canvas id="game-canvas"></canvas>
-            <div id="game-message"></div>
-            <div id="game-instructions">Press SPACE or tap to jump • Collect all flowers, then reach the boy</div>
+        <div class="window-content" id="story-content">
+            <div class="story-text" id="story-text"></div>
+            <button class="story-button" id="story-button">Next</button>
         </div>
     </div>
 
-    <!-- Final Screen -->
-    <div id="final-screen">
-        <div id="final-text">Go to the GC</div>
-        <div id="question-text">Will you be my girlfriend?</div>
-        <button id="yes-button" onclick="sendYes()">Yes</button>
+    <!-- Final overlay after story -->
+    <div id="story-final-overlay">
+        <div id="story-final-text">
+            Come to the GC.<br />
+            I’m waiting.
+        </div>
     </div>
 
     <!-- Background Music -->
@@ -555,24 +543,23 @@
             win.style.display = 'none';
         }
 
-        function openGame() {
-            const win = document.getElementById('game-window');
+        function openStory() {
+            const win = document.getElementById('story-window');
             win.style.display = 'block';
             bringToFront(win);
-            addTaskbarApp('game', '🎮 Game', () => {
+            addTaskbarApp('story', '❤️ Always', () => {
                 if (win.style.display === 'none') {
                     win.style.display = 'block';
                 }
                 bringToFront(win);
             });
-            startGame();
+            startStory();
         }
 
-        function closeGame() {
-            const win = document.getElementById('game-window');
+        function closeStory() {
+            const win = document.getElementById('story-window');
             win.style.display = 'none';
-            removeTaskbarApp('game');
-            gameRunning = false;
+            removeTaskbarApp('story');
         }
 
         // Dragging windows
@@ -631,207 +618,110 @@
         }
 
         // ===========================
-        // GAME (PLAYABLE)
+        // INTERACTIVE STORY
         // ===========================
-        const canvas = document.getElementById('game-canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = 860;
-        canvas.height = 460;
-
-        const GROUND_Y = 360;
-
-        let player = {
-            x: 60,
-            y: GROUND_Y,
-            width: 36,
-            height: 58,
-            vy: 0,
-            jumping: false,
-            speed: 0
-        };
-
-        let items = [];
-        let score = 0;
-        let gameRunning = false;
-        let gameWon = false;
-
-        // PLACEHOLDER: compliments
-        const compliments = [
-            "[Your smile is beautiful]",
-            "[You're so cute]",
-            "[You're so kind]",
-            "[You're so generous]",
-            "[You're amazing]"
+        const storyScenes = [
+            {
+                text:
+                    "Sometimes life gets messy. People make mistakes. Trust gets broken.",
+                button: "I know…"
+            },
+            {
+                text:
+                    "But there’s one thing I want you to never forget:",
+                button: "What is it?"
+            },
+            {
+                text:
+                    "No matter what happens… I’ll always be here.",
+                button: "Always?"
+            },
+            {
+                text:
+                    "Always. Through good days, bad days, fights, silence, distance… everything.",
+                button: "Show me."
+            },
+            {
+                text:
+                    "Even when things get hard, I’ll wait. I’ll stay. I’ll choose you.",
+                button: "Okay…"
+            },
+            {
+                text:
+                    "So I have one question for you…",
+                button: "Show"
+            }
         ];
 
-        function resetGame() {
-            player.x = 60;
-            player.y = GROUND_Y;
-            player.vy = 0;
-            player.jumping = false;
-            player.speed = 0;
+        let currentScene = 0;
+        let storyActive = false;
 
-            items = [];
-            // Flowers
-            for (let i = 0; i < 5; i++) {
-                items.push({
-                    type: 'flower',
-                    x: 260 + i * 110,
-                    y: 360,
-                    width: 32,
-                    height: 32,
-                    collected: false
-                });
-            }
-            // Boy at the end
-            items.push({
-                type: 'boy',
-                x: 770,
-                y: 330,
-                width: 50,
-                height: 76,
-                collected: false
-            });
+        const storyTextEl = document.getElementById('story-text');
+        const storyButtonEl = document.getElementById('story-button');
+        const storyFinalOverlay = document.getElementById('story-final-overlay');
 
-            score = 0;
-            gameWon = false;
+        function startStory() {
+            currentScene = 0;
+            storyActive = true;
+            storyFinalOverlay.style.display = 'none';
+            showScene(currentScene);
         }
 
-        function startGame() {
-            resetGame();
-            gameRunning = true;
-            gameLoop();
-        }
-
-        function gameLoop() {
-            if (!gameRunning) return;
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Sky
-            const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-            grad.addColorStop(0, '#7ec8f5');
-            grad.addColorStop(1, '#c9f0ff');
-            ctx.fillStyle = grad;
-            ctx.fillRect(0, 0, canvas.width, 380);
-
-            // Ground
-            ctx.fillStyle = '#56c268';
-            ctx.fillRect(0, 380, canvas.width, 80);
-            ctx.fillStyle = '#3fa354';
-            ctx.fillRect(0, 380, canvas.width, 10);
-
-            // Physics
-            if (player.y < GROUND_Y) {
-                player.vy += 0.7;
-                player.y += player.vy;
-            } else {
-                player.y = GROUND_Y;
-                player.vy = 0;
-                player.jumping = false;
+        function showScene(index) {
+            if (index >= storyScenes.length) {
+                // End of scenes → show final overlay
+                finishStory();
+                return;
             }
 
-            // Draw player (girl)
-            ctx.fillStyle = '#ff69b4';
-            ctx.fillRect(player.x, player.y, player.width, player.height);
-            // Face
-            ctx.fillStyle = '#fff';
-            ctx.fillRect(player.x + 8, player.y + 12, 9, 9);
-            ctx.fillRect(player.x + 19, player.y + 12, 9, 9);
-            ctx.fillStyle = '#000';
-            ctx.fillRect(player.x + 10, player.y + 14, 5, 5);
-            ctx.fillRect(player.x + 21, player.y + 14, 5, 5);
+            const scene = storyScenes[index];
 
-            // Draw items
-            items.forEach(item => {
-                if (item.collected) return;
+            // Fade out text & button
+            storyTextEl.classList.remove('visible');
+            storyButtonEl.classList.remove('visible');
 
-                if (item.type === 'flower') {
-                    // Flower head
-                    ctx.fillStyle = '#ff6b6b';
-                    ctx.beginPath();
-                    ctx.arc(item.x + 16, item.y + 16, 14, 0, Math.PI * 2);
-                    ctx.fill();
-                    // Stem
-                    ctx.fillStyle = '#2e7d32';
-                    ctx.fillRect(item.x + 14, item.y + 30, 4, 12);
-                } else if (item.type === 'boy') {
-                    ctx.fillStyle = '#4a90e2';
-                    ctx.fillRect(item.x, item.y, item.width, item.height);
-                    // Face
-                    ctx.fillStyle = '#fff';
-                    ctx.fillRect(item.x + 12, item.y + 16, 11, 11);
-                    ctx.fillRect(item.x + 27, item.y + 16, 11, 11);
-                    ctx.fillStyle = '#000';
-                    ctx.fillRect(item.x + 14, item.y + 18, 7, 7);
-                    ctx.fillRect(item.x + 29, item.y + 18, 7, 7);
-                }
-            });
+            setTimeout(() => {
+                storyTextEl.textContent = scene.text;
+                storyButtonEl.textContent = scene.button;
 
-            // Collision detection
-            items.forEach(item => {
-                if (item.collected) return;
+                // Fade in text
+                storyTextEl.classList.add('visible');
 
-                if (
-                    player.x < item.x + item.width &&
-                    player.x + player.width > item.x &&
-                    player.y < item.y + item.height &&
-                    player.y + player.height > item.y
-                ) {
-                    item.collected = true;
-
-                    if (item.type === 'flower') {
-                        const msg = compliments[score % compliments.length];
-                        document.getElementById('game-message').textContent = msg;
-                        document.getElementById('game-message').style.display = 'block';
-                        score++;
-                        setTimeout(() => {
-                            document.getElementById('game-message').style.display = 'none';
-                        }, 1600);
-                    } else if (item.type === 'boy') {
-                        gameRunning = false;
-                        gameWon = true;
-                        setTimeout(() => {
-                            document.getElementById('game-window').style.display = 'none';
-                            removeTaskbarApp('game');
-                            document.getElementById('final-screen').style.display = 'flex';
-                            document.getElementById('bg-music').play();
-                        }, 1200);
-                    }
-                }
-            });
-
-            requestAnimationFrame(gameLoop);
+                setTimeout(() => {
+                    // Then fade in button
+                    storyButtonEl.classList.add('visible');
+                }, 600);
+            }, 800);
         }
 
-        function jump() {
-            if (!player.jumping && gameRunning) {
-                player.jumping = true;
-                player.vy = -10.5;
-            }
-        }
-
-        document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space') {
-                e.preventDefault();
-                jump();
-            }
+        storyButtonEl.addEventListener('click', () => {
+            if (!storyActive) return;
+            currentScene++;
+            showScene(currentScene);
         });
 
-        canvas.addEventListener('pointerdown', (e) => {
-            e.preventDefault();
-            jump();
-        });
+        function finishStory() {
+            storyActive = false;
+            // Close story window
+            const win = document.getElementById('story-window');
+            win.style.display = 'none';
+            removeTaskbarApp('story');
+
+            // Show final full-screen overlay
+            storyFinalOverlay.style.display = 'flex';
+
+            // Start music if not already
+            const music = document.getElementById('bg-music');
+            if (music.paused) {
+                music.play().catch(() => {});
+            }
+        }
 
         // ===========================
-        // FINAL YES
+        // FINAL (GC MESSAGE IS ENOUGH)
         // ===========================
-        function sendYes() {
-            // PLACEHOLDER: Add your email/notification logic here
-            const email = "[YOUR_EMAIL_ADDRESS]";
-            console.log("She said YES! Notify: " + email);
-            alert("Yay! Go to the GC now! 💕");
-        }
+        // No "Will you be my girlfriend?" here anymore.
+        // You'll ask her in the GC.
     </script>
 </body>
 </html>
