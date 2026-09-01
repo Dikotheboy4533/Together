@@ -63,12 +63,14 @@
         }
 
         .flower {
-            position: absolute;
+            position: fixed;
             top: -50px;
-            font-size: 2em;
+            font-size: 1.8em;
             animation: fall linear infinite;
-            opacity: 0.9;
+            opacity: 0.85;
             filter: drop-shadow(0 0 6px rgba(255,120,160,0.7));
+            z-index: 9999;
+            pointer-events: none;
         }
 
         @keyframes fall {
@@ -394,10 +396,6 @@
         @keyframes fadeIn {
             to { opacity: 1; }
         }
-
-        #bg-music {
-            display: none;
-        }
     </style>
 </head>
 <body>
@@ -490,23 +488,29 @@
         </div>
     </div>
 
-    <!-- Background Music -->
-    <audio id="bg-music" loop>
-        <source src="music.mp3" type="audio/mpeg">
-    </audio>
-
     <script>
         // ===========================
-        // MUSIC CONTROL
+        // MUSIC SETUP (JavaScript Audio API)
         // ===========================
         let musicStarted = false;
-        const bgMusic = document.getElementById('bg-music');
+        const bgMusic = new Audio('music.mp3');
+        bgMusic.loop = true;
+        bgMusic.preload = 'auto';
+        bgMusic.style.display = 'none';
 
         function startMusic() {
             if (musicStarted) return;
-            bgMusic.play().catch(e => {
-                console.log('Music autoplay blocked:', e);
-            });
+            
+            bgMusic.load();
+            bgMusic.play()
+                .then(() => {
+                    console.log('🎵 Music started!');
+                })
+                .catch(e => {
+                    console.error('❌ Music failed:', e);
+                    console.log('Make sure music.mp3 is in the same folder as this HTML file');
+                });
+            
             musicStarted = true;
         }
 
@@ -537,17 +541,34 @@
             startFlowerFall();
         });
 
+        // ===========================
+        // FALLING FLOWERS (Lilies & Roses)
+        // ===========================
         function startFlowerFall() {
-            const flowers = ['🌹', '🌷', '🌸', '🌺'];
-            setInterval(() => {
+            const flowers = ['🌹', '🌷'];
+            let flowerCount = 0;
+            const maxFlowers = 12;
+
+            const flowerInterval = setInterval(() => {
+                if (flowerCount >= maxFlowers) {
+                    clearInterval(flowerInterval);
+                    return;
+                }
+
                 const flower = document.createElement('div');
                 flower.className = 'flower';
                 flower.textContent = flowers[Math.floor(Math.random() * flowers.length)];
-                flower.style.left = Math.random() * 100 + 'vw';
-                flower.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                flower.style.left = (Math.random() * 90 + 5) + 'vw';
+                flower.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                flower.style.fontSize = (Math.random() * 0.8 + 1.4) + 'em';
                 document.body.appendChild(flower);
-                setTimeout(() => flower.remove(), 5000);
-            }, 250);
+
+                flowerCount++;
+
+                setTimeout(() => {
+                    flower.remove();
+                }, 7000);
+            }, 600);
         }
 
         // ===========================
