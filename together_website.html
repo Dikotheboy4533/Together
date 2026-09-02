@@ -6,48 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TOGETHER</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            user-select: none;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden;
-            height: 100vh;
-            background: #0b1026;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow: hidden; height: 100vh; background: #0b1026; }
 
         #loading-screen {
-            position: fixed;
-            inset: 0;
+            position: fixed; inset: 0;
             background: linear-gradient(135deg, #0f1742, #1a237e, #283593);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 3000;
-            flex-direction: column;
-            cursor: pointer;
+            display: flex; justify-content: center; align-items: center;
+            z-index: 3000; flex-direction: column; cursor: pointer;
         }
 
         #loading-text {
-            font-size: 4em;
-            color: #fff;
+            font-size: 4em; color: #fff;
             text-shadow: 0 0 25px rgba(120, 160, 255, 0.8);
             animation: pulse 2s ease-in-out infinite;
-            margin-bottom: 20px;
-            letter-spacing: 2px;
+            margin-bottom: 20px; letter-spacing: 2px;
         }
 
         #loading-hint {
-            color: rgba(255,255,255,0.7);
-            font-size: 1em;
-            margin-top: 30px;
-            opacity: 0;
-            animation: fadeInHint 1s ease-in forwards;
-            animation-delay: 2s;
+            color: rgba(255,255,255,0.7); font-size: 1em; margin-top: 30px;
+            opacity: 0; animation: fadeInHint 1s ease-in forwards; animation-delay: 2s;
         }
 
         @keyframes fadeInHint { to { opacity: 1; } }
@@ -57,282 +35,159 @@
         }
 
         .flower {
-            position: fixed;
-            top: -50px;
-            font-size: 1.8em;
-            animation: fall linear infinite;
-            opacity: 0.85;
-            filter: drop-shadow(0 0 6px rgba(255,120,160,0.7));
-            z-index: 9999;
-            pointer-events: none;
+            position: fixed; top: -50px; font-size: 1.8em;
+            animation: fall linear infinite; opacity: 0.85;
+            filter: drop-shadow(0 0 6px rgba(255,120,160,0.7)); z-index: 9999; pointer-events: none;
         }
 
-        @keyframes fall {
-            to { transform: translateY(110vh) rotate(360deg); }
-        }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
 
         #desktop {
-            display: none;
-            width: 100%;
-            height: 100vh;
-            position: relative;
-            overflow: hidden;
+            display: none; width: 100%; height: 100vh;
+            position: relative; overflow: hidden;
             background-image: url('bg.jpg');
-            background-size: cover;
-            background-position: center;
+            background-size: cover; background-position: center;
         }
 
         #desktop::before {
-            content: "";
-            position: absolute;
-            inset: 0;
+            content: ""; position: absolute; inset: 0;
             background: linear-gradient(135deg, rgba(10,15,40,0.6), rgba(20,30,80,0.4));
             pointer-events: none;
         }
 
         #top-bar {
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 32px;
-            background: rgba(8, 12, 30, 0.85);
-            backdrop-filter: blur(8px);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 12px;
-            color: #cfe3ff;
-            font-size: 0.8em;
-            z-index: 50;
+            position: absolute; top: 0; left: 0; right: 0; height: 32px;
+            background: rgba(8, 12, 30, 0.85); backdrop-filter: blur(8px);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 12px; color: #cfe3ff; font-size: 0.8em; z-index: 50;
             border-bottom: 1px solid rgba(120, 160, 255, 0.25);
         }
 
         #clock { margin-left: auto; }
 
         #desktop-icons {
-            position: absolute;
-            top: 50px;
-            left: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 22px;
-            z-index: 10;
+            position: absolute; top: 50px; left: 20px;
+            display: flex; flex-direction: column; gap: 22px; z-index: 10;
         }
 
         .desktop-icon {
-            width: 92px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
-            padding: 8px 6px;
-            border-radius: 10px;
+            width: 92px; display: flex; flex-direction: column;
+            align-items: center; gap: 6px; cursor: pointer;
+            padding: 8px 6px; border-radius: 10px;
             transition: background 0.2s ease, transform 0.2s ease;
         }
 
         .desktop-icon:hover {
-            background: rgba(255, 255, 255, 0.12);
-            transform: scale(1.03);
+            background: rgba(255, 255, 255, 0.12); transform: scale(1.03);
         }
 
         .desktop-icon .icon-emoji {
-            font-size: 2.8em;
-            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.6));
+            font-size: 2.8em; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.6));
         }
 
         .desktop-icon span {
-            color: #eaf0ff;
-            font-size: 0.85em;
-            text-align: center;
-            text-shadow: 0 1px 4px rgba(0,0,0,0.9);
-            max-width: 100%;
-            word-wrap: break-word;
+            color: #eaf0ff; font-size: 0.85em; text-align: center;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.9); max-width: 100%; word-wrap: break-word;
         }
 
         #taskbar {
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            height: 52px;
-            background: rgba(8, 12, 30, 0.92);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            padding: 0 10px;
-            z-index: 60;
+            position: absolute; bottom: 0; left: 0; right: 0; height: 52px;
+            background: rgba(8, 12, 30, 0.92); backdrop-filter: blur(10px);
+            display: flex; align-items: center; padding: 0 10px; z-index: 60;
             border-top: 1px solid rgba(120, 160, 255, 0.3);
         }
 
         #start-button {
-            width: 38px;
-            height: 38px;
-            border-radius: 8px;
+            width: 38px; height: 38px; border-radius: 8px;
             background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 1.1em;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-            cursor: default;
+            color: white; display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 1.1em;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5); cursor: default;
         }
 
-        #taskbar-apps {
-            display: flex;
-            gap: 6px;
-            margin-left: 12px;
-            flex: 1;
-        }
+        #taskbar-apps { display: flex; gap: 6px; margin-left: 12px; flex: 1; }
 
         .taskbar-app {
-            height: 38px;
-            min-width: 44px;
-            padding: 0 10px;
-            border-radius: 6px;
-            background: rgba(255,255,255,0.08);
-            color: #e0e9ff;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.8em;
-            border: 1px solid rgba(120,160,255,0.25);
-            cursor: pointer;
+            height: 38px; min-width: 44px; padding: 0 10px; border-radius: 6px;
+            background: rgba(255,255,255,0.08); color: #e0e9ff;
+            display: flex; align-items: center; gap: 6px; font-size: 0.8em;
+            border: 1px solid rgba(120,160,255,0.25); cursor: pointer;
             transition: background 0.2s ease;
         }
 
-        .taskbar-app:hover {
-            background: rgba(255,255,255,0.15);
-        }
+        .taskbar-app:hover { background: rgba(255,255,255,0.15); }
 
-        #taskbar-time {
-            margin-left: auto;
-            color: #cfe3ff;
-            font-size: 0.8em;
-            padding-right: 10px;
-        }
+        #taskbar-time { margin-left: auto; color: #cfe3ff; font-size: 0.8em; padding-right: 10px; }
 
         .window {
-            position: fixed;
-            top: 50%;
-            left: 50%;
+            position: fixed; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            background: #0f172a;
-            border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.7);
-            z-index: 200;
-            overflow: hidden;
-            border: 1px solid rgba(120, 160, 255, 0.35);
-            display: none;
-            min-width: 320px;
-            min-height: 220px;
+            background: #0f172a; border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.7); z-index: 200;
+            overflow: hidden; border: 1px solid rgba(120, 160, 255, 0.35);
+            display: none; min-width: 320px; min-height: 220px;
         }
 
         .window.active { z-index: 210; }
 
         .window-header {
             background: linear-gradient(135deg, #1e293b, #0f172a);
-            color: #e2e8f0;
-            padding: 8px 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.85em;
-            border-bottom: 1px solid rgba(120, 160, 255, 0.25);
-            cursor: grab;
+            color: #e2e8f0; padding: 8px 12px;
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85em; border-bottom: 1px solid rgba(120, 160, 255, 0.25); cursor: grab;
         }
 
         .window-header:active { cursor: grabbing; }
 
-        .window-title {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .window-title { display: flex; align-items: center; gap: 8px; }
 
-        .window-controls {
-            display: flex;
-            gap: 6px;
-        }
+        .window-controls { display: flex; gap: 6px; }
 
         .window-controls button {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+            width: 14px; height: 14px; border-radius: 50%; border: none;
+            cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.5);
         }
 
         .btn-close { background: #ef4444; }
         .btn-min { background: #f59e0b; }
 
-        .window-content {
-            height: calc(100% - 36px);
-            overflow: auto;
-        }
+        .window-content { height: calc(100% - 36px); overflow: auto; }
 
-        #notepad-window {
-            width: 640px;
-            height: 440px;
-        }
+        #notepad-window { width: 640px; height: 440px; }
 
         .notepad-content {
-            height: 100%;
-            padding: 16px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.95em;
-            line-height: 1.6;
-            background: #fffdf5;
-            color: #1f2937;
-            overflow-y: auto;
-            user-select: text;
+            height: 100%; padding: 16px;
+            font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;
+            background: #fffdf5; color: #1f2937; overflow-y: auto; user-select: text;
         }
 
         #story-window {
-            width: 700px;
-            height: 500px;
+            width: 700px; height: 500px;
             background: radial-gradient(circle at center, #0f172a, #0b1220);
             color: #e2e8f0;
         }
 
         #story-content {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 30px;
-            text-align: center;
+            position: relative; width: 100%; height: 100%;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            padding: 30px; text-align: center;
         }
 
         .story-text {
-            font-size: 1.5em;
-            line-height: 1.6;
-            max-width: 520px;
-            opacity: 0;
-            transform: translateY(10px);
+            font-size: 1.5em; line-height: 1.6; max-width: 520px;
+            opacity: 0; transform: translateY(10px);
             transition: opacity 1s ease, transform 1s ease;
         }
 
-        .story-text.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .story-text.visible { opacity: 1; transform: translateY(0); }
 
         .story-button {
-            margin-top: 30px;
-            padding: 10px 28px;
-            font-size: 1em;
-            border-radius: 22px;
-            border: none;
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            color: white;
-            cursor: pointer;
+            margin-top: 30px; padding: 10px 28px; font-size: 1em; border-radius: 22px;
+            border: none; background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white; cursor: pointer;
             box-shadow: 0 6px 18px rgba(60, 100, 255, 0.4);
-            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.6s ease;
-            opacity: 0;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.6s ease; opacity: 0;
         }
 
         .story-button.visible { opacity: 1; }
@@ -343,51 +198,34 @@
         }
 
         #story-final-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
+            display: none; position: fixed; inset: 0;
             background: radial-gradient(circle at center, #0b1026, #000);
-            z-index: 2500;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: #fff;
-            text-align: center;
+            z-index: 2500; flex-direction: column;
+            justify-content: center; align-items: center;
+            color: #fff; text-align: center;
         }
 
         #story-final-text {
-            font-size: 2.2em;
-            line-height: 1.5;
-            opacity: 0;
+            font-size: 2.2em; line-height: 1.5; opacity: 0;
             animation: fadeIn 3s ease-in forwards;
-            text-shadow: 0 0 20px rgba(120,160,255,0.7);
-            padding: 0 20px;
+            text-shadow: 0 0 20px rgba(120,160,255,0.7); padding: 0 20px;
         }
 
         @keyframes fadeIn { to { opacity: 1; } }
 
         #music-player {
-            position: fixed;
-            bottom: 60px;
-            right: 20px;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(120, 160, 255, 0.3);
-            border-radius: 12px;
-            padding: 10px 16px;
-            display: none;
-            align-items: center;
-            gap: 12px;
-            z-index: 1000;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-            min-width: 280px;
+            position: fixed; bottom: 60px; right: 20px;
+            background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px);
+            border: 1px solid rgba(120, 160, 255, 0.3); border-radius: 12px;
+            padding: 10px 16px; display: none;
+            align-items: center; gap: 12px; z-index: 1000;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5); min-width: 280px;
         }
 
         #music-player.visible { display: flex; }
 
         .music-icon {
-            font-size: 1.8em;
-            animation: musicBeat 1.5s ease-in-out infinite;
+            font-size: 1.8em; animation: musicBeat 1.5s ease-in-out infinite;
         }
 
         @keyframes musicBeat {
@@ -395,90 +233,39 @@
             50% { transform: scale(1.15); }
         }
 
-        #music-info {
-            flex: 1;
-            color: #e0e9ff;
-            font-size: 0.85em;
-        }
+        #music-info { flex: 1; color: #e0e9ff; font-size: 0.85em; }
 
-        #music-title {
-            font-weight: 600;
-            margin-bottom: 2px;
-        }
+        #music-title { font-weight: 600; margin-bottom: 2px; }
 
-        #music-status {
-            font-size: 0.75em;
-            color: rgba(200, 220, 255, 0.7);
-        }
+        #music-status { font-size: 0.75em; color: rgba(200, 220, 255, 0.7); }
 
-        #music-controls {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
+        #music-controls { display: flex; gap: 8px; align-items: center; }
 
         .music-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(120, 160, 255, 0.2);
-            color: #cfe3ff;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1em;
-            transition: background 0.2s ease, transform 0.2s ease;
+            width: 32px; height: 32px; border-radius: 50%; border: none;
+            background: rgba(120, 160, 255, 0.2); color: #cfe3ff;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-size: 1em; transition: background 0.2s ease, transform 0.2s ease;
         }
 
         .music-btn:hover {
-            background: rgba(120, 160, 255, 0.35);
-            transform: scale(1.08);
+            background: rgba(120, 160, 255, 0.35); transform: scale(1.08);
         }
 
         #music-volume {
-            width: 60px;
-            height: 4px;
-            -webkit-appearance: none;
-            appearance: none;
-            background: rgba(120, 160, 255, 0.3);
-            border-radius: 2px;
-            outline: none;
-            cursor: pointer;
+            width: 60px; height: 4px;
+            -webkit-appearance: none; appearance: none;
+            background: rgba(120, 160, 255, 0.3); border-radius: 2px;
+            outline: none; cursor: pointer;
         }
 
         #music-volume::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: #60a5fa;
-            cursor: pointer;
-        }
-
-        #test-sound-btn {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            padding: 8px 16px;
-            background: #10b981;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            z-index: 9999;
-            font-size: 0.9em;
-        }
-
-        #test-sound-btn:hover {
-            background: #059669;
+            -webkit-appearance: none; width: 14px; height: 14px;
+            border-radius: 50%; background: #60a5fa; cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <button id="test-sound-btn" onclick="testSound()">🔊 Test Sound</button>
-
     <div id="loading-screen">
         <div id="loading-text">Together</div>
         <div id="loading-hint">Click anywhere to continue</div>
@@ -570,7 +357,7 @@
             <div id="music-status">Click ▶ to play</div>
         </div>
         <div id="music-controls">
-            <button class="music-btn" id="music-play-pause" onclick="togglePlayPause()">▶</button>
+            <button class="music-btn" onclick="togglePlayPause()">▶</button>
             <input type="range" id="music-volume" min="0" max="1" step="0.1" value="0.7" oninput="changeVolume(this.value)">
         </div>
     </div>
@@ -579,153 +366,72 @@
         let musicStarted = false;
         let isPlaying = false;
         let bgMusic = null;
-        let audioContext = null;
 
         const musicPlayer = document.getElementById('music-player');
         const musicStatus = document.getElementById('music-status');
-        const playPauseBtn = document.getElementById('music-play-pause');
-
-        // Test sound with Web Audio API (guaranteed to work)
-        function testSound() {
-            try {
-                if (!audioContext) {
-                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                }
-                
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-                
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-                
-                oscillator.frequency.value = 440;
-                oscillator.type = 'sine';
-                gainNode.gain.value = 0.3;
-                
-                oscillator.start();
-                
-                setTimeout(() => {
-                    oscillator.stop();
-                    alert('✓ Sound works! If you hear a beep, your speakers are on. Now click the music player ▶ button.');
-                }, 500);
-            } catch(e) {
-                alert('Sound test failed: ' + e.message);
-            }
-        }
 
         function initMusic() {
-            musicPlayer.classList.add('visible');
-            
-            try {
-                bgMusic = new Audio('music.mp3');
-                bgMusic.loop = true;
-                bgMusic.volume = 0.7;
-                
-                bgMusic.addEventListener('canplay', () => {
-                    musicStatus.textContent = 'Ready! Click ▶';
-                    console.log('✓ Music file loaded');
-                });
-                
-                bgMusic.addEventListener('error', (e) => {
-                    console.error('❌ Music error:', e);
-                    musicStatus.textContent = 'File not found!';
-                    console.log('Put music.mp3 in the same folder as this HTML file');
-                });
-                
-                bgMusic.addEventListener('play', () => {
-                    isPlaying = true;
-                    playPauseBtn.textContent = '⏸';
-                    musicStatus.textContent = 'Playing ♪';
-                    console.log('♪ Music playing!');
-                });
-                
-                bgMusic.addEventListener('pause', () => {
-                    isPlaying = false;
-                    playPauseBtn.textContent = '▶';
-                    musicStatus.textContent = 'Paused';
-                });
-                
-            } catch(e) {
-                console.error('Audio init failed:', e);
-                musicStatus.textContent = 'Audio not supported';
-            }
+            if (bgMusic) return;
+            bgMusic = new Audio('music.mp3');
+            bgMusic.loop = true;
+            bgMusic.volume = 0.7;
+
+            bgMusic.addEventListener('play', () => {
+                isPlaying = true;
+                musicStatus.textContent = 'Playing ♪';
+            });
+
+            bgMusic.addEventListener('pause', () => {
+                isPlaying = false;
+                musicStatus.textContent = 'Paused';
+            });
         }
 
         function startMusic() {
             if (musicStarted) return;
-            
             musicPlayer.classList.add('visible');
-            
-            if (!bgMusic) {
-                initMusic();
-            }
-            
-            setTimeout(() => {
-                if (bgMusic) {
-                    bgMusic.play().catch(e => {
-                        console.log('Autoplay blocked - user must click ▶');
-                        musicStatus.textContent = 'Click ▶ to play';
-                    });
-                }
-            }, 100);
-            
+            initMusic();
+            bgMusic.play().catch(() => {
+                musicStatus.textContent = 'Click ▶ to play';
+            });
             musicStarted = true;
         }
 
         function togglePlayPause() {
-            if (!bgMusic) {
-                initMusic();
-                return;
-            }
-            
+            if (!bgMusic) initMusic();
             if (isPlaying) {
                 bgMusic.pause();
             } else {
-                bgMusic.play().catch(e => {
-                    console.error('Play failed:', e);
-                    musicStatus.textContent = 'Error: ' + e.message;
-                });
+                bgMusic.play();
             }
         }
 
         function changeVolume(value) {
-            if (bgMusic) {
-                bgMusic.volume = parseFloat(value);
-            }
+            if (bgMusic) bgMusic.volume = parseFloat(value);
         }
 
         function updateClock() {
             const now = new Date();
             const h = String(now.getHours()).padStart(2, '0');
             const m = String(now.getMinutes()).padStart(2, '0');
-            const time = `${h}:${m}`;
-            document.getElementById('clock').textContent = time;
-            document.getElementById('taskbar-time').textContent = time;
+            document.getElementById('clock').textContent = `${h}:${m}`;
+            document.getElementById('taskbar-time').textContent = `${h}:${m}`;
         }
         setInterval(updateClock, 1000);
         updateClock();
 
-        const loadingScreen = document.getElementById('loading-screen');
-        const desktop = document.getElementById('desktop');
-
-        loadingScreen.addEventListener('click', () => {
+        document.getElementById('loading-screen').addEventListener('click', () => {
             startMusic();
-            loadingScreen.style.display = 'none';
-            desktop.style.display = 'block';
+            document.getElementById('loading-screen').style.display = 'none';
+            document.getElementById('desktop').style.display = 'block';
             startFlowerFall();
         });
 
         function startFlowerFall() {
             const flowers = ['🌹', '🌷'];
-            let flowerCount = 0;
-            const maxFlowers = 12;
-
-            const flowerInterval = setInterval(() => {
-                if (flowerCount >= maxFlowers) {
-                    clearInterval(flowerInterval);
-                    return;
-                }
-
+            let count = 0;
+            const interval = setInterval(() => {
+                if (count >= 12) { clearInterval(interval); return; }
                 const flower = document.createElement('div');
                 flower.className = 'flower';
                 flower.textContent = flowers[Math.floor(Math.random() * flowers.length)];
@@ -733,9 +439,7 @@
                 flower.style.animationDuration = (Math.random() * 3 + 4) + 's';
                 flower.style.fontSize = (Math.random() * 0.8 + 1.4) + 'em';
                 document.body.appendChild(flower);
-
-                flowerCount++;
-
+                count++;
                 setTimeout(() => flower.remove(), 7000);
             }, 600);
         }
@@ -759,8 +463,7 @@
         }
 
         function closeNotepad() {
-            const win = document.getElementById('notepad-window');
-            win.style.display = 'none';
+            document.getElementById('notepad-window').style.display = 'none';
             removeTaskbarApp('notepad');
         }
 
@@ -780,8 +483,7 @@
         }
 
         function closeStory() {
-            const win = document.getElementById('story-window');
-            win.style.display = 'none';
+            document.getElementById('story-window').style.display = 'none';
             removeTaskbarApp('story');
         }
 
@@ -805,12 +507,10 @@
             let x = e.clientX - offsetX;
             let y = e.clientY - offsetY;
             const rect = win.getBoundingClientRect();
-            
             if (x < -rect.width + 60) x = -rect.width + 60;
             if (y < 0) y = 0;
             if (x > window.innerWidth - 60) x = window.innerWidth - 60;
             if (y > window.innerHeight - 60) y = window.innerHeight - 60;
-
             win.style.left = (x + rect.width / 2) + 'px';
             win.style.top = (y + rect.height / 2) + 'px';
         }
@@ -823,13 +523,12 @@
 
         function addTaskbarApp(id, label, onClick) {
             if (document.getElementById('taskbar-app-' + id)) return;
-            const apps = document.getElementById('taskbar-apps');
             const app = document.createElement('div');
             app.className = 'taskbar-app';
             app.id = 'taskbar-app-' + id;
             app.textContent = label;
             app.onclick = onClick;
-            apps.appendChild(app);
+            document.getElementById('taskbar-apps').appendChild(app);
         }
 
         function removeTaskbarApp(id) {
@@ -848,28 +547,21 @@
 
         let currentScene = 0;
         let storyActive = false;
-
         const storyTextEl = document.getElementById('story-text');
         const storyButtonEl = document.getElementById('story-button');
-        const storyFinalOverlay = document.getElementById('story-final-overlay');
 
         function startStory() {
             currentScene = 0;
             storyActive = true;
-            storyFinalOverlay.style.display = 'none';
+            document.getElementById('story-final-overlay').style.display = 'none';
             showScene(currentScene);
         }
 
         function showScene(index) {
-            if (index >= storyScenes.length) {
-                finishStory();
-                return;
-            }
-
+            if (index >= storyScenes.length) { finishStory(); return; }
             const scene = storyScenes[index];
             storyTextEl.classList.remove('visible');
             storyButtonEl.classList.remove('visible');
-
             setTimeout(() => {
                 storyTextEl.textContent = scene.text;
                 storyButtonEl.textContent = scene.button;
@@ -886,10 +578,9 @@
 
         function finishStory() {
             storyActive = false;
-            const win = document.getElementById('story-window');
-            win.style.display = 'none';
+            document.getElementById('story-window').style.display = 'none';
             removeTaskbarApp('story');
-            storyFinalOverlay.style.display = 'flex';
+            document.getElementById('story-final-overlay').style.display = 'flex';
         }
     </script>
 </body>
