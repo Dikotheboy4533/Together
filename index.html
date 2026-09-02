@@ -213,7 +213,6 @@
 
         @keyframes fadeIn { to { opacity: 1; } }
 
-        /* BIG MUSIC PLAYER - TOP RIGHT */
         #music-player {
             position: fixed;
             top: 20px;
@@ -451,7 +450,6 @@
         </div>
     </div>
 
-    <!-- BIG MUSIC PLAYER - TOP RIGHT -->
     <div id="music-player">
         <div class="music-player-header">
             <div class="music-disc" id="music-disc">🎵</div>
@@ -464,9 +462,9 @@
             <div class="music-progress-bar" id="music-progress"></div>
         </div>
         <div class="music-controls">
-            <button class="music-control-btn" onclick="previousTrack()">⏮</button>
+            <button class="music-control-btn" onclick="restartSong()">⏮</button>
             <button class="music-control-btn play-btn" id="play-btn" onclick="togglePlay()">▶</button>
-            <button class="music-control-btn" onclick="nextTrack()">⏭</button>
+            <button class="music-control-btn" onclick="restartSong()">⏭</button>
         </div>
         <div class="music-volume-control">
             <div class="music-volume-icon">🔊</div>
@@ -524,7 +522,7 @@
 
             bgMusic.addEventListener('error', (e) => {
                 console.error('Music error:', e);
-                musicStatus.textContent = 'Error loading music';
+                musicStatus.textContent = 'Add music.mp3 to this folder';
             });
         }
 
@@ -539,10 +537,7 @@
             if (isPlaying) {
                 bgMusic.pause();
             } else {
-                bgMusic.play().catch(e => {
-                    console.error('Play failed:', e);
-                    musicStatus.textContent = 'Click to play';
-                });
+                bgMusic.play();
             }
         }
 
@@ -552,13 +547,7 @@
             }
         }
 
-        function previousTrack() {
-            if (bgMusic) {
-                bgMusic.currentTime = 0;
-            }
-        }
-
-        function nextTrack() {
+        function restartSong() {
             if (bgMusic) {
                 bgMusic.currentTime = 0;
             }
