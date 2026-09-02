@@ -213,55 +213,156 @@
 
         @keyframes fadeIn { to { opacity: 1; } }
 
+        /* BIG MUSIC PLAYER - TOP RIGHT */
         #music-player {
-            position: fixed; bottom: 60px; right: 20px;
-            background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px);
-            border: 1px solid rgba(120, 160, 255, 0.3); border-radius: 12px;
-            padding: 10px 16px; display: none;
-            align-items: center; gap: 12px; z-index: 1000;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5); min-width: 280px;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 320px;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(12px);
+            border: 2px solid rgba(120, 160, 255, 0.4);
+            border-radius: 16px;
+            padding: 20px;
+            z-index: 9999;
+            box-shadow: 0 12px 48px rgba(0,0,0,0.6);
+            display: none;
         }
 
-        #music-player.visible { display: flex; }
+        #music-player.visible { display: block; }
 
-        .music-icon {
-            font-size: 1.8em; animation: musicBeat 1.5s ease-in-out infinite;
+        .music-player-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(120, 160, 255, 0.2);
         }
 
-        @keyframes musicBeat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.15); }
+        .music-disc {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+            animation: spin 3s linear infinite;
         }
 
-        #music-info { flex: 1; color: #e0e9ff; font-size: 0.85em; }
+        .music-disc.paused { animation: none; }
 
-        #music-title { font-weight: 600; margin-bottom: 2px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        #music-status { font-size: 0.75em; color: rgba(200, 220, 255, 0.7); }
+        .music-player-info { flex: 1; }
 
-        #music-controls { display: flex; gap: 8px; align-items: center; }
-
-        .music-btn {
-            width: 32px; height: 32px; border-radius: 50%; border: none;
-            background: rgba(120, 160, 255, 0.2); color: #cfe3ff;
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
-            font-size: 1em; transition: background 0.2s ease, transform 0.2s ease;
+        .music-player-title {
+            color: #fff;
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 4px;
         }
 
-        .music-btn:hover {
-            background: rgba(120, 160, 255, 0.35); transform: scale(1.08);
+        .music-player-status {
+            color: rgba(200, 220, 255, 0.7);
+            font-size: 0.85em;
         }
 
-        #music-volume {
-            width: 60px; height: 4px;
-            -webkit-appearance: none; appearance: none;
-            background: rgba(120, 160, 255, 0.3); border-radius: 2px;
-            outline: none; cursor: pointer;
+        .music-progress {
+            width: 100%;
+            height: 6px;
+            background: rgba(120, 160, 255, 0.2);
+            border-radius: 3px;
+            margin-bottom: 16px;
+            overflow: hidden;
         }
 
-        #music-volume::-webkit-slider-thumb {
-            -webkit-appearance: none; width: 14px; height: 14px;
-            border-radius: 50%; background: #60a5fa; cursor: pointer;
+        .music-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .music-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .music-control-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(120, 160, 255, 0.2);
+            color: #cfe3ff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            transition: all 0.2s ease;
+        }
+
+        .music-control-btn:hover {
+            background: rgba(120, 160, 255, 0.4);
+            transform: scale(1.1);
+        }
+
+        .music-control-btn.play-btn {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            font-size: 1.4em;
+        }
+
+        .music-control-btn.play-btn:hover {
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+        }
+
+        .music-volume-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .music-volume-icon {
+            color: #cfe3ff;
+            font-size: 1.1em;
+        }
+
+        .music-volume-slider {
+            flex: 1;
+            height: 6px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(120, 160, 255, 0.2);
+            border-radius: 3px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .music-volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #60a5fa;
+            cursor: pointer;
+        }
+
+        .music-volume-slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #60a5fa;
+            cursor: pointer;
+            border: none;
         }
     </style>
 </head>
@@ -350,64 +451,117 @@
         </div>
     </div>
 
+    <!-- BIG MUSIC PLAYER - TOP RIGHT -->
     <div id="music-player">
-        <div class="music-icon">🎵</div>
-        <div id="music-info">
-            <div id="music-title">Our Song</div>
-            <div id="music-status">Click ▶ to play</div>
+        <div class="music-player-header">
+            <div class="music-disc" id="music-disc">🎵</div>
+            <div class="music-player-info">
+                <div class="music-player-title">Our Song</div>
+                <div class="music-player-status" id="music-status">Click play to start</div>
+            </div>
         </div>
-        <div id="music-controls">
-            <button class="music-btn" onclick="togglePlayPause()">▶</button>
-            <input type="range" id="music-volume" min="0" max="1" step="0.1" value="0.7" oninput="changeVolume(this.value)">
+        <div class="music-progress">
+            <div class="music-progress-bar" id="music-progress"></div>
+        </div>
+        <div class="music-controls">
+            <button class="music-control-btn" onclick="previousTrack()">⏮</button>
+            <button class="music-control-btn play-btn" id="play-btn" onclick="togglePlay()">▶</button>
+            <button class="music-control-btn" onclick="nextTrack()">⏭</button>
+        </div>
+        <div class="music-volume-control">
+            <div class="music-volume-icon">🔊</div>
+            <input type="range" class="music-volume-slider" id="volume-slider" min="0" max="1" step="0.05" value="0.7" oninput="setVolume(this.value)">
         </div>
     </div>
 
     <script>
-        let musicStarted = false;
-        let isPlaying = false;
         let bgMusic = null;
+        let isPlaying = false;
+        let musicVisible = false;
 
         const musicPlayer = document.getElementById('music-player');
         const musicStatus = document.getElementById('music-status');
+        const playBtn = document.getElementById('play-btn');
+        const musicDisc = document.getElementById('music-disc');
+        const progressBar = document.getElementById('music-progress');
+
+        function showMusicPlayer() {
+            musicPlayer.classList.add('visible');
+            musicVisible = true;
+        }
 
         function initMusic() {
             if (bgMusic) return;
+            
             bgMusic = new Audio('music.mp3');
             bgMusic.loop = true;
             bgMusic.volume = 0.7;
 
             bgMusic.addEventListener('play', () => {
                 isPlaying = true;
-                musicStatus.textContent = 'Playing ♪';
+                playBtn.textContent = '⏸';
+                musicDisc.classList.remove('paused');
+                musicStatus.textContent = 'Playing now ♪';
             });
 
             bgMusic.addEventListener('pause', () => {
                 isPlaying = false;
+                playBtn.textContent = '▶';
+                musicDisc.classList.add('paused');
                 musicStatus.textContent = 'Paused';
             });
-        }
 
-        function startMusic() {
-            if (musicStarted) return;
-            musicPlayer.classList.add('visible');
-            initMusic();
-            bgMusic.play().catch(() => {
-                musicStatus.textContent = 'Click ▶ to play';
+            bgMusic.addEventListener('timeupdate', () => {
+                if (bgMusic.duration) {
+                    const percent = (bgMusic.currentTime / bgMusic.duration) * 100;
+                    progressBar.style.width = percent + '%';
+                }
             });
-            musicStarted = true;
+
+            bgMusic.addEventListener('loadeddata', () => {
+                musicStatus.textContent = 'Ready - Click play!';
+            });
+
+            bgMusic.addEventListener('error', (e) => {
+                console.error('Music error:', e);
+                musicStatus.textContent = 'Error loading music';
+            });
         }
 
-        function togglePlayPause() {
-            if (!bgMusic) initMusic();
+        function togglePlay() {
+            if (!musicVisible) {
+                showMusicPlayer();
+            }
+            if (!bgMusic) {
+                initMusic();
+            }
+            
             if (isPlaying) {
                 bgMusic.pause();
             } else {
-                bgMusic.play();
+                bgMusic.play().catch(e => {
+                    console.error('Play failed:', e);
+                    musicStatus.textContent = 'Click to play';
+                });
             }
         }
 
-        function changeVolume(value) {
-            if (bgMusic) bgMusic.volume = parseFloat(value);
+        function setVolume(value) {
+            if (bgMusic) {
+                bgMusic.volume = parseFloat(value);
+            }
+        }
+
+        function previousTrack() {
+            if (bgMusic) {
+                bgMusic.currentTime = 0;
+            }
+        }
+
+        function nextTrack() {
+            if (bgMusic) {
+                bgMusic.currentTime = 0;
+            }
         }
 
         function updateClock() {
@@ -421,7 +575,8 @@
         updateClock();
 
         document.getElementById('loading-screen').addEventListener('click', () => {
-            startMusic();
+            showMusicPlayer();
+            initMusic();
             document.getElementById('loading-screen').style.display = 'none';
             document.getElementById('desktop').style.display = 'block';
             startFlowerFall();
