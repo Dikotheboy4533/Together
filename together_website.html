@@ -20,9 +20,6 @@
             background: #0b1026;
         }
 
-        /* ===========================
-           LOADING SCREEN
-           =========================== */
         #loading-screen {
             position: fixed;
             inset: 0;
@@ -53,10 +50,7 @@
             animation-delay: 2s;
         }
 
-        @keyframes fadeInHint {
-            to { opacity: 1; }
-        }
-
+        @keyframes fadeInHint { to { opacity: 1; } }
         @keyframes pulse {
             0%, 100% { opacity: 0.6; transform: scale(1); }
             50% { opacity: 1; transform: scale(1.06); }
@@ -74,14 +68,9 @@
         }
 
         @keyframes fall {
-            to {
-                transform: translateY(110vh) rotate(360deg);
-            }
+            to { transform: translateY(110vh) rotate(360deg); }
         }
 
-        /* ===========================
-           DESKTOP
-           =========================== */
         #desktop {
             display: none;
             width: 100%;
@@ -117,9 +106,7 @@
             border-bottom: 1px solid rgba(120, 160, 255, 0.25);
         }
 
-        #clock {
-            margin-left: auto;
-        }
+        #clock { margin-left: auto; }
 
         #desktop-icons {
             position: absolute;
@@ -224,9 +211,161 @@
             padding-right: 10px;
         }
 
-        /* ===========================
-           MUSIC PLAYER BAR
-           =========================== */
+        .window {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #0f172a;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+            z-index: 200;
+            overflow: hidden;
+            border: 1px solid rgba(120, 160, 255, 0.35);
+            display: none;
+            min-width: 320px;
+            min-height: 220px;
+        }
+
+        .window.active { z-index: 210; }
+
+        .window-header {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: #e2e8f0;
+            padding: 8px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85em;
+            border-bottom: 1px solid rgba(120, 160, 255, 0.25);
+            cursor: grab;
+        }
+
+        .window-header:active { cursor: grabbing; }
+
+        .window-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 6px;
+        }
+
+        .window-controls button {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .btn-close { background: #ef4444; }
+        .btn-min { background: #f59e0b; }
+
+        .window-content {
+            height: calc(100% - 36px);
+            overflow: auto;
+        }
+
+        #notepad-window {
+            width: 640px;
+            height: 440px;
+        }
+
+        .notepad-content {
+            height: 100%;
+            padding: 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+            background: #fffdf5;
+            color: #1f2937;
+            overflow-y: auto;
+            user-select: text;
+        }
+
+        #story-window {
+            width: 700px;
+            height: 500px;
+            background: radial-gradient(circle at center, #0f172a, #0b1220);
+            color: #e2e8f0;
+        }
+
+        #story-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .story-text {
+            font-size: 1.5em;
+            line-height: 1.6;
+            max-width: 520px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        .story-text.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .story-button {
+            margin-top: 30px;
+            padding: 10px 28px;
+            font-size: 1em;
+            border-radius: 22px;
+            border: none;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(60, 100, 255, 0.4);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.6s ease;
+            opacity: 0;
+        }
+
+        .story-button.visible { opacity: 1; }
+
+        .story-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 24px rgba(60, 100, 255, 0.55);
+        }
+
+        #story-final-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at center, #0b1026, #000);
+            z-index: 2500;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            text-align: center;
+        }
+
+        #story-final-text {
+            font-size: 2.2em;
+            line-height: 1.5;
+            opacity: 0;
+            animation: fadeIn 3s ease-in forwards;
+            text-shadow: 0 0 20px rgba(120,160,255,0.7);
+            padding: 0 20px;
+        }
+
+        @keyframes fadeIn { to { opacity: 1; } }
+
         #music-player {
             position: fixed;
             bottom: 60px;
@@ -244,9 +383,7 @@
             min-width: 280px;
         }
 
-        #music-player.visible {
-            display: flex;
-        }
+        #music-player.visible { display: flex; }
 
         .music-icon {
             font-size: 1.8em;
@@ -300,10 +437,6 @@
             transform: scale(1.08);
         }
 
-        .music-btn:active {
-            transform: scale(0.95);
-        }
-
         #music-volume {
             width: 60px;
             height: 4px;
@@ -317,7 +450,6 @@
 
         #music-volume::-webkit-slider-thumb {
             -webkit-appearance: none;
-            appearance: none;
             width: 14px;
             height: 14px;
             border-radius: 50%;
@@ -325,197 +457,33 @@
             cursor: pointer;
         }
 
-        #music-volume::-moz-range-thumb {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: #60a5fa;
-            cursor: pointer;
-            border: none;
-        }
-
-        /* ===========================
-           WINDOWS
-           =========================== */
-        .window {
+        #test-sound-btn {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #0f172a;
-            border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.7);
-            z-index: 200;
-            overflow: hidden;
-            border: 1px solid rgba(120, 160, 255, 0.35);
-            display: none;
-            min-width: 320px;
-            min-height: 220px;
-        }
-
-        .window.active {
-            z-index: 210;
-        }
-
-        .window-header {
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            color: #e2e8f0;
-            padding: 8px 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.85em;
-            border-bottom: 1px solid rgba(120, 160, 255, 0.25);
-            cursor: grab;
-        }
-
-        .window-header:active {
-            cursor: grabbing;
-        }
-
-        .window-title {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .window-controls {
-            display: flex;
-            gap: 6px;
-        }
-
-        .window-controls button {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.5);
-        }
-
-        .btn-close {
-            background: #ef4444;
-        }
-        .btn-min {
-            background: #f59e0b;
-        }
-
-        .window-content {
-            height: calc(100% - 36px);
-            overflow: auto;
-        }
-
-        /* Notepad */
-        #notepad-window {
-            width: 640px;
-            height: 440px;
-        }
-
-        .notepad-content {
-            height: 100%;
-            padding: 16px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.95em;
-            line-height: 1.6;
-            background: #fffdf5;
-            color: #1f2937;
-            overflow-y: auto;
-            user-select: text;
-        }
-
-        /* Story Window */
-        #story-window {
-            width: 700px;
-            height: 500px;
-            background: radial-gradient(circle at center, #0f172a, #0b1220);
-            color: #e2e8f0;
-        }
-
-        #story-content {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 30px;
-            text-align: center;
-        }
-
-        .story-text {
-            font-size: 1.5em;
-            line-height: 1.6;
-            max-width: 520px;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 1s ease, transform 1s ease;
-        }
-
-        .story-text.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .story-button {
-            margin-top: 30px;
-            padding: 10px 28px;
-            font-size: 1em;
-            border-radius: 22px;
-            border: none;
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            top: 10px;
+            right: 10px;
+            padding: 8px 16px;
+            background: #10b981;
             color: white;
+            border: none;
+            border-radius: 8px;
             cursor: pointer;
-            box-shadow: 0 6px 18px rgba(60, 100, 255, 0.4);
-            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.6s ease;
-            opacity: 0;
+            z-index: 9999;
+            font-size: 0.9em;
         }
 
-        .story-button.visible {
-            opacity: 1;
-        }
-
-        .story-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 24px rgba(60, 100, 255, 0.55);
-        }
-
-        /* Final overlay after story */
-        #story-final-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: radial-gradient(circle at center, #0b1026, #000);
-            z-index: 2500;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: #fff;
-            text-align: center;
-        }
-
-        #story-final-text {
-            font-size: 2.2em;
-            line-height: 1.5;
-            opacity: 0;
-            animation: fadeIn 3s ease-in forwards;
-            text-shadow: 0 0 20px rgba(120,160,255,0.7);
-            padding: 0 20px;
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
+        #test-sound-btn:hover {
+            background: #059669;
         }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
+    <button id="test-sound-btn" onclick="testSound()">🔊 Test Sound</button>
+
     <div id="loading-screen">
         <div id="loading-text">Together</div>
         <div id="loading-hint">Click anywhere to continue</div>
     </div>
 
-    <!-- Desktop -->
     <div id="desktop">
         <div id="top-bar">
             <div>Je te adore, mon amour</div>
@@ -523,11 +491,11 @@
         </div>
 
         <div id="desktop-icons">
-            <div class="desktop-icon" id="love-file" onclick="openNotepad()">
+            <div class="desktop-icon" onclick="openNotepad()">
                 <div class="icon-emoji">🌹</div>
                 <span>love.txt</span>
             </div>
-            <div class="desktop-icon" id="story-file" onclick="openStory()">
+            <div class="desktop-icon" onclick="openStory()">
                 <div class="icon-emoji">🪻</div>
                 <span>Always</span>
             </div>
@@ -540,7 +508,6 @@
         </div>
     </div>
 
-    <!-- Notepad Window -->
     <div id="notepad-window" class="window">
         <div class="window-header" onmousedown="startDrag(event, 'notepad-window')">
             <div class="window-title">
@@ -572,7 +539,6 @@
         </div>
     </div>
 
-    <!-- Story Window -->
     <div id="story-window" class="window">
         <div class="window-header" onmousedown="startDrag(event, 'story-window')">
             <div class="window-title">
@@ -590,7 +556,6 @@
         </div>
     </div>
 
-    <!-- Final overlay after story -->
     <div id="story-final-overlay">
         <div id="story-final-text">
             Come to our first GC and drop a 'Heyy'<br />
@@ -598,12 +563,11 @@
         </div>
     </div>
 
-    <!-- Music Player Bar -->
     <div id="music-player">
         <div class="music-icon">🎵</div>
         <div id="music-info">
             <div id="music-title">Our Song</div>
-            <div id="music-status">Loading...</div>
+            <div id="music-status">Click ▶ to play</div>
         </div>
         <div id="music-controls">
             <button class="music-btn" id="music-play-pause" onclick="togglePlayPause()">▶</button>
@@ -612,90 +576,124 @@
     </div>
 
     <script>
-        // ===========================
-        // MUSIC SETUP
-        // ===========================
         let musicStarted = false;
         let isPlaying = false;
-        const bgMusic = new Audio('music.mp3');
-        bgMusic.loop = true;
-        bgMusic.preload = 'auto';
-        bgMusic.volume = 0.7;
+        let bgMusic = null;
+        let audioContext = null;
 
         const musicPlayer = document.getElementById('music-player');
         const musicStatus = document.getElementById('music-status');
         const playPauseBtn = document.getElementById('music-play-pause');
 
-        // Check if audio can play
-        bgMusic.addEventListener('canplay', () => {
-            musicStatus.textContent = 'Ready to play';
-        });
+        // Test sound with Web Audio API (guaranteed to work)
+        function testSound() {
+            try {
+                if (!audioContext) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = 440;
+                oscillator.type = 'sine';
+                gainNode.gain.value = 0.3;
+                
+                oscillator.start();
+                
+                setTimeout(() => {
+                    oscillator.stop();
+                    alert('✓ Sound works! If you hear a beep, your speakers are on. Now click the music player ▶ button.');
+                }, 500);
+            } catch(e) {
+                alert('Sound test failed: ' + e.message);
+            }
+        }
 
-        bgMusic.addEventListener('loadeddata', () => {
-            musicStatus.textContent = 'Loaded ✓';
-        });
-
-        bgMusic.addEventListener('error', (e) => {
-            console.error('Music error:', e);
-            musicStatus.textContent = 'Error - check file';
-        });
-
-        bgMusic.addEventListener('play', () => {
-            isPlaying = true;
-            playPauseBtn.textContent = '⏸';
-            musicStatus.textContent = 'Playing ♪';
-        });
-
-        bgMusic.addEventListener('pause', () => {
-            isPlaying = false;
-            playPauseBtn.textContent = '▶';
-            musicStatus.textContent = 'Paused';
-        });
+        function initMusic() {
+            musicPlayer.classList.add('visible');
+            
+            try {
+                bgMusic = new Audio('music.mp3');
+                bgMusic.loop = true;
+                bgMusic.volume = 0.7;
+                
+                bgMusic.addEventListener('canplay', () => {
+                    musicStatus.textContent = 'Ready! Click ▶';
+                    console.log('✓ Music file loaded');
+                });
+                
+                bgMusic.addEventListener('error', (e) => {
+                    console.error('❌ Music error:', e);
+                    musicStatus.textContent = 'File not found!';
+                    console.log('Put music.mp3 in the same folder as this HTML file');
+                });
+                
+                bgMusic.addEventListener('play', () => {
+                    isPlaying = true;
+                    playPauseBtn.textContent = '⏸';
+                    musicStatus.textContent = 'Playing ♪';
+                    console.log('♪ Music playing!');
+                });
+                
+                bgMusic.addEventListener('pause', () => {
+                    isPlaying = false;
+                    playPauseBtn.textContent = '▶';
+                    musicStatus.textContent = 'Paused';
+                });
+                
+            } catch(e) {
+                console.error('Audio init failed:', e);
+                musicStatus.textContent = 'Audio not supported';
+            }
+        }
 
         function startMusic() {
             if (musicStarted) return;
             
             musicPlayer.classList.add('visible');
-            musicStatus.textContent = 'Loading...';
             
-            bgMusic.load();
-            
-            const playPromise = bgMusic.play();
-            
-            if (playPromise !== undefined) {
-                playPromise
-                    .then(() => {
-                        console.log('🎵 Music started successfully!');
-                        musicStarted = true;
-                    })
-                    .catch(error => {
-                        console.error('❌ Autoplay prevented:', error);
-                        musicStatus.textContent = 'Click ▶ to play';
-                        musicStarted = true;
-                    });
+            if (!bgMusic) {
+                initMusic();
             }
+            
+            setTimeout(() => {
+                if (bgMusic) {
+                    bgMusic.play().catch(e => {
+                        console.log('Autoplay blocked - user must click ▶');
+                        musicStatus.textContent = 'Click ▶ to play';
+                    });
+                }
+            }, 100);
+            
+            musicStarted = true;
         }
 
         function togglePlayPause() {
-            if (!musicStarted) {
-                startMusic();
+            if (!bgMusic) {
+                initMusic();
                 return;
             }
             
             if (isPlaying) {
                 bgMusic.pause();
             } else {
-                bgMusic.play();
+                bgMusic.play().catch(e => {
+                    console.error('Play failed:', e);
+                    musicStatus.textContent = 'Error: ' + e.message;
+                });
             }
         }
 
         function changeVolume(value) {
-            bgMusic.volume = parseFloat(value);
+            if (bgMusic) {
+                bgMusic.volume = parseFloat(value);
+            }
         }
 
-        // ===========================
-        // CLOCK
-        // ===========================
         function updateClock() {
             const now = new Date();
             const h = String(now.getHours()).padStart(2, '0');
@@ -707,9 +705,6 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // ===========================
-        // LOADING SCREEN
-        // ===========================
         const loadingScreen = document.getElementById('loading-screen');
         const desktop = document.getElementById('desktop');
 
@@ -720,9 +715,6 @@
             startFlowerFall();
         });
 
-        // ===========================
-        // FALLING FLOWERS (Lilies & Roses)
-        // ===========================
         function startFlowerFall() {
             const flowers = ['🌹', '🌷'];
             let flowerCount = 0;
@@ -744,15 +736,10 @@
 
                 flowerCount++;
 
-                setTimeout(() => {
-                    flower.remove();
-                }, 7000);
+                setTimeout(() => flower.remove(), 7000);
             }, 600);
         }
 
-        // ===========================
-        // WINDOW MANAGEMENT
-        // ===========================
         let zIndexCounter = 200;
 
         function bringToFront(win) {
@@ -766,9 +753,7 @@
             win.style.display = 'block';
             bringToFront(win);
             addTaskbarApp('notepad', '📄 love.txt', () => {
-                if (win.style.display === 'none') {
-                    win.style.display = 'block';
-                }
+                if (win.style.display === 'none') win.style.display = 'block';
                 bringToFront(win);
             });
         }
@@ -780,8 +765,7 @@
         }
 
         function minimizeWindow(id) {
-            const win = document.getElementById(id);
-            win.style.display = 'none';
+            document.getElementById(id).style.display = 'none';
         }
 
         function openStory() {
@@ -789,9 +773,7 @@
             win.style.display = 'block';
             bringToFront(win);
             addTaskbarApp('story', '❤️ Always', () => {
-                if (win.style.display === 'none') {
-                    win.style.display = 'block';
-                }
+                if (win.style.display === 'none') win.style.display = 'block';
                 bringToFront(win);
             });
             startStory();
@@ -803,7 +785,6 @@
             removeTaskbarApp('story');
         }
 
-        // Dragging windows
         let dragState = null;
 
         function startDrag(e, id) {
@@ -823,8 +804,8 @@
             const { win, offsetX, offsetY } = dragState;
             let x = e.clientX - offsetX;
             let y = e.clientY - offsetY;
-
             const rect = win.getBoundingClientRect();
+            
             if (x < -rect.width + 60) x = -rect.width + 60;
             if (y < 0) y = 0;
             if (x > window.innerWidth - 60) x = window.innerWidth - 60;
@@ -840,10 +821,8 @@
             document.removeEventListener('mouseup', stopDrag);
         }
 
-        // Taskbar apps
         function addTaskbarApp(id, label, onClick) {
             if (document.getElementById('taskbar-app-' + id)) return;
-
             const apps = document.getElementById('taskbar-apps');
             const app = document.createElement('div');
             app.className = 'taskbar-app';
@@ -858,34 +837,13 @@
             if (app) app.remove();
         }
 
-        // ===========================
-        // INTERACTIVE STORY
-        // ===========================
         const storyScenes = [
-            {
-                text: "Sometimes life hits hard. People make mistakes, they hurt others...",
-                button: "I know…"
-            },
-            {
-                text: "But there's one thing I want you to never forget:",
-                button: "What is it?"
-            },
-            {
-                text: "No matter what happens or what comes at us.. I'll always be here.",
-                button: "Always?"
-            },
-            {
-                text: "Always. Through good days, bad days, mood offs, hurting times, painful moments",
-                button: "Show me."
-            },
-            {
-                text: "Even when things get hard, I'll wait. I'll stay.. I'll stand, for you. Ik u might have bad days, u might be dry, know that I'll always be here because love isn't just about caring about a person, it's about choosing them, even when they change...",
-                button: "Okay…"
-            },
-            {
-                text: "So I have one question for you…",
-                button: "Ask meee"
-            }
+            { text: "Sometimes life hits hard. People make mistakes, they hurt others...", button: "I know…" },
+            { text: "But there's one thing I want you to never forget:", button: "What is it?" },
+            { text: "No matter what happens or what comes at us.. I'll always be here.", button: "Always?" },
+            { text: "Always. Through good days, bad days, mood offs, hurting times, painful moments", button: "Show me." },
+            { text: "Even when things get hard, I'll wait. I'll stay.. I'll stand, for you. Ik u might have bad days, u might be dry, know that I'll always be here because love isn't just about caring about a person, it's about choosing them, even when they change...", button: "Okay…" },
+            { text: "So I have one question for you…", button: "Ask meee" }
         ];
 
         let currentScene = 0;
@@ -909,19 +867,14 @@
             }
 
             const scene = storyScenes[index];
-
             storyTextEl.classList.remove('visible');
             storyButtonEl.classList.remove('visible');
 
             setTimeout(() => {
                 storyTextEl.textContent = scene.text;
                 storyButtonEl.textContent = scene.button;
-
                 storyTextEl.classList.add('visible');
-
-                setTimeout(() => {
-                    storyButtonEl.classList.add('visible');
-                }, 600);
+                setTimeout(() => storyButtonEl.classList.add('visible'), 600);
             }, 800);
         }
 
@@ -936,7 +889,6 @@
             const win = document.getElementById('story-window');
             win.style.display = 'none';
             removeTaskbarApp('story');
-
             storyFinalOverlay.style.display = 'flex';
         }
     </script>
